@@ -1,0 +1,258 @@
+@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
+@import "tailwindcss";
+
+/* ============================================================
+   ElomaSans — the single brand typeface
+   ============================================================ */
+@font-face {
+  font-family: "Eloma Sans";
+  src: url("/fonts/ElomaSans-Premium.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Theme tokens → generate Tailwind utilities
+   (bg-cream, text-ink, shadow-soft-md, animate-fade-up, …)
+   ============================================================ */
+@theme {
+  /* Warm luxury palette */
+  --color-cream: #f8f5ef;
+  --color-cream-deep: #efe9df;
+  --color-gold: #d89a4a;
+  --color-gold-soft: #e6b673;
+  --color-gold-deep: #b87b2f;
+  --color-ink: #2a2420;
+  --color-ink-soft: #6d6357;
+  --color-ink-faint: #a49a8c;
+
+  /* Forest greens (Destination band accents) */
+  --color-forest: #3a6a4a;
+  --color-forest-deep: #274c35;
+  --color-forest-soft: #5c8a6b;
+  --color-sage: #e7efe6;
+
+  /* Warm browns — from the "Destination" wordmark. Accent for lower/future
+     sections in place of the gold/orange. */
+  --color-brown: #7a5c3e;
+  --color-brown-deep: #5b4632;
+  --color-brown-soft: #a07d54;
+
+  /* Typeface */
+  --font-sans: "Eloma Sans", "Plus Jakarta Sans", "DM Sans", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-script: "Kaushan Script", "Segoe Script", cursive;
+
+  /* Soft shadows */
+  --shadow-soft-sm: 0 6px 20px -8px rgba(58, 44, 24, 0.18);
+  --shadow-soft-md: 0 22px 50px -22px rgba(58, 44, 24, 0.3);
+  --shadow-soft-lg: 0 40px 90px -30px rgba(58, 44, 24, 0.38);
+
+  /* Entrance / ambient motion */
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-float-in: float-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-drift: drift 7s ease-in-out infinite;
+  --animate-kenburns: kenburns 7s ease-out both;
+
+  @keyframes kenburns {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1.18);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes float-in {
+    from {
+      opacity: 0;
+      transform: translateY(22px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold-deep);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Large-resolution scaling (2K / 4K) */
+  @media (min-width: 2560px) {
+    html {
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 3200px) {
+    html {
+      font-size: 22px;
+    }
+  }
+}
+
+/* ============================================================
+   Custom utilities Tailwind can't express directly
+   ============================================================ */
+/* Light, transparent frosted glass (reference look) */
+@utility glass {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+}
+
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Engraved brass nameplate — warm metal with a thin top highlight (Wander Index) */
+@utility brass {
+  background: linear-gradient(180deg, #a07d54 0%, #7a5c3e 46%, #5b4632 100%);
+  border: 1px solid rgba(91, 70, 50, 0.9);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 244, 228, 0.35),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.22),
+    0 18px 34px -18px rgba(58, 44, 24, 0.75);
+}
+
+/* Hide scrollbar (custom carousel controls handle navigation) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Centered fluid container */
+@utility shell {
+  width: min(100% - 2 * clamp(1.25rem, 4vw, 4.5rem), 1360px);
+  margin-inline: auto;
+  @media (min-width: 1920px) {
+    max-width: 1560px;
+  }
+  @media (min-width: 2560px) {
+    max-width: 1840px;
+  }
+  @media (min-width: 3200px) {
+    max-width: 2200px;
+  }
+}
+
+/* Premium one-by-one gallery reveal: unveils downward while rising + focusing */
+@keyframes moment-in {
+  0% {
+    opacity: 0;
+    transform: translateY(64px) scale(0.9);
+    clip-path: inset(0 0 100% 0 round 26px);
+    filter: blur(10px);
+  }
+  55% {
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    clip-path: inset(0 0 0 0 round 26px);
+    filter: blur(0);
+  }
+}
+
+/* Seamless city ticker (phone screen bottom strip) */
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Hero auto-advance timing bar (fills over one slide interval) */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Drifting blossom petals in the app-showcase scene */
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-40px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--petal-opacity, 0.85);
+  }
+  90% {
+    opacity: var(--petal-opacity, 0.85);
+  }
+  100% {
+    transform: translateY(var(--petal-fall, 760px)) translateX(var(--petal-sway, 40px))
+      rotate(var(--petal-spin, 420deg));
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Respect reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
