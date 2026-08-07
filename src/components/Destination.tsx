@@ -25,11 +25,13 @@ function useCountUp(target: number, run: boolean, dur = 1300) {
   return val;
 }
 
-// per-portal 3D placement in the tilting deck: [translateZ, rotateY]
+// per-portal 3D placement in the tilting deck: symmetric wrap-around toward centre
 const depth: React.CSSProperties[] = [
-  { transform: "translateZ(26px) rotateY(9deg)" }, // left  — yawed toward centre
-  { transform: "translateZ(74px)" }, //                center — pushed forward
-  { transform: "translateZ(26px) rotateY(-9deg)" }, // right — yawed toward centre
+  { transform: "translateZ(0px) rotateY(16deg)" }, //   far-left — furthest, most yawed
+  { transform: "translateZ(30px) rotateY(9deg)" }, //   left     — yawed toward centre
+  { transform: "translateZ(74px)" }, //                 center   — pushed forward (feature)
+  { transform: "translateZ(30px) rotateY(-9deg)" }, //  right    — yawed toward centre
+  { transform: "translateZ(0px) rotateY(-16deg)" }, //  far-right — furthest, most yawed
 ];
 
 export default function Destination() {
@@ -240,34 +242,49 @@ export default function Destination() {
             </div>
 
             {wander.plates.map((p, i) => {
-              const feature = i === 1;
+              const feature = i === 2;
+              const edge = i === 0 || i === wander.plates.length - 1;
               return (
-                <div key={p.key} style={depth[i]} className="will-change-transform">
-                  <div style={pop(feature ? 0.05 : 0.18)}>
+                <div key={p.key} style={depth[i]} className={`will-change-transform ${edge ? "hidden lg:block" : ""}`}>
+                  <div style={pop(feature ? 0.05 : edge ? 0.24 : 0.18)}>
                     <a
                       href="#packages"
                       aria-label={`Explore ${p.name}, ${p.region}`}
                       className="group relative block will-change-transform transition-transform duration-500 ease-out hover:-translate-y-2 focus-visible:-translate-y-2"
                     >
-                      {/* arched portal */}
+                      {/* outer cabin wall panel — second frame */}
+                      <div className="rounded-[46%/32%] bg-gradient-to-b from-[#ece3d4] to-[#d8ccb9] p-[0.6rem] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.6),inset_0_2px_3px_rgba(255,255,255,0.8),inset_0_-3px_7px_rgba(122,92,62,0.25)] ring-1 ring-brown/15 sm:p-3">
+                      {/* airplane cabin window — moulded plastic bezel */}
                       <div
-                        className={`relative overflow-hidden rounded-t-[999px] rounded-b-[28px] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.6)] ring-1 ring-brown/15 ${
+                        className={`relative rounded-[44%/30%] bg-gradient-to-b from-[#f6f1e8] to-[#e5dccc] p-[0.9rem] shadow-[inset_0_2px_3px_rgba(255,255,255,0.9),inset_0_-4px_8px_rgba(122,92,62,0.2)] ring-1 ring-brown/10 sm:p-4 ${
                           feature
                             ? "h-[22rem] w-64 sm:h-[27rem] sm:w-72 lg:h-[31rem] lg:w-[21rem] xl:h-[34rem] xl:w-[23rem]"
+                            : edge
+                            ? "h-[14rem] w-40 sm:h-[16.5rem] sm:w-44 lg:h-[19rem] lg:w-52 xl:h-[21rem] xl:w-56"
                             : "h-[17rem] w-48 sm:h-[20rem] sm:w-52 lg:h-[23rem] lg:w-60 xl:h-[25rem] xl:w-64"
                         }`}
                       >
-                        <img
-                          src={p.img}
-                          alt={`${p.name}, ${p.region}`}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
-                        <div className="pointer-events-none absolute inset-0 rounded-t-[999px] rounded-b-[28px] ring-1 ring-inset ring-white/15" />
-                        <span className="glass absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white">
-                          {p.region}
-                        </span>
+                        {/* recessed glass pane */}
+                        <div className="relative h-full w-full overflow-hidden rounded-[42%/28%] shadow-[inset_0_3px_12px_rgba(58,44,24,0.6)]">
+                          <img
+                            src={p.img}
+                            alt={`${p.name}, ${p.region}`}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                          {/* cabin-dim + sky wash */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+                          {/* raked glass reflection */}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/30 via-white/5 to-transparent" />
+                          {/* inner glass rim */}
+                          <div className="pointer-events-none absolute inset-0 rounded-[42%/28%] ring-1 ring-inset ring-white/20" />
+                          <span className="glass absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white">
+                            {p.region}
+                          </span>
+                        </div>
+                        {/* breather hole at the base of the pane */}
+                        <span className="pointer-events-none absolute bottom-[1.35rem] left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-black/45 shadow-[inset_0_1px_1px_rgba(0,0,0,0.6),0_1px_0_rgba(255,255,255,0.5)] sm:bottom-6" />
+                      </div>
                       </div>
 
                       {/* engraved brass coordinate nameplate */}

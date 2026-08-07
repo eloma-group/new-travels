@@ -62,68 +62,68 @@ export type MomentSet = {
 export const momentSets: MomentSet[] = [
   {
     images: [
-      p("photo-1551632811-561732d1e306"),
-      p("photo-1533587851505-d119e13fa0d7"),
-      p("photo-1508672019048-805c876b67e2"),
-      p("photo-1539635278303-d4002c07eae3"),
-      p("photo-1504280390367-361c6d9f38f4"),
-      p("photo-1507608869274-d3177c8bb4c7"),
+      p("photo-1564507592333-c60657eea523"),
+      p("photo-1599661046289-e31897846e41"),
+      p("photo-1614082242765-7c98ca0f3df3"),
+      p("photo-1580191947416-62d35a55e71d"),
+      p("photo-1561361513-2d000a50f0dc"),
+      p("photo-1567157577867-05ccb1388e66"),
     ],
     alts: [
-      "Two hikers on a trail below snow-capped peaks",
-      "Travellers watching sunset over a coastal city",
-      "A traveller on a jetty facing still mountain water",
-      "Friends laughing together on a mountain hike",
-      "A forest campsite seen from inside a tent",
-      "Hot-air balloons drifting across a clear sky",
+      "The Taj Mahal glowing at sunrise",
+      "The pink façade of Hawa Mahal in Jaipur",
+      "Ornate courtyard of a Rajasthan city palace",
+      "A desert fort rising over Rajasthan",
+      "Ghats and temples along the Ganges at Varanasi",
+      "A colourful street in old India",
     ],
     caption: {
-      title: "Ridgeline Trekking",
-      copy: "Summit volcanic ridgelines with expert local guides.",
+      title: "Palaces of Rajasthan",
+      copy: "Wander marble mausoleums, pink-city bazaars and desert forts.",
     },
   },
   {
     images: [
-      p("photo-1518548419970-58e3b4079ab2"),
-      p("photo-1570077188670-e3a8d69ac5ff"),
-      p("photo-1573843981267-be1999ff37cd"),
-      p("photo-1493976040374-85c8e12f0c0e"),
-      p("photo-1509316785289-025f5b846b35"),
-      p("photo-1517824806704-9040b037703b"),
+      p("photo-1506973035872-a4ec16b8e8d9"),
+      p("photo-1523482580672-f109ba8cb9be"),
+      p("photo-1582672060674-bc2bd808a8b5"),
+      p("photo-1523731407965-2430cd12f5e4"),
+      p("photo-1562184552-997c461abbe6"),
+      p("photo-1552465011-b4e21bf6e79a"),
     ],
     alts: [
-      "A clifftop temple glowing at sunset",
-      "Whitewashed houses above the Aegean sea",
-      "Overwater villas on a turquoise lagoon",
-      "Lantern-lit streets of an old Japanese town",
-      "Red rock mesas across an open desert",
-      "A tent beneath the Milky Way at night",
+      "Sydney Opera House by the harbour",
+      "Sydney Harbour Bridge at dusk",
+      "Turquoise coral of the Great Barrier Reef",
+      "White sand swirls of Whitehaven Beach",
+      "Surfers at Bondi Beach",
+      "Eucalyptus valleys of the Blue Mountains",
     ],
     caption: {
-      title: "Timeless Temple Trails",
-      copy: "Wander lantern-lit streets and sacred gardens at dusk.",
+      title: "Australian Shores",
+      copy: "From reef-fringed islands to the harbour city and wild coast.",
     },
   },
   {
     images: [
-      p("photo-1506905925346-21bda4d32df4"),
-      p("photo-1476514525535-07fb3b4ae5f1"),
-      p("photo-1510414842594-a61c69b5ae57"),
-      p("photo-1469854523086-cc02fe5d8800"),
-      p("photo-1501785888041-af3ef285b470"),
-      p("photo-1470071459604-3b5ec3a7fe05"),
+      p("photo-1588083949404-c4f1ed1323b3"),
+      p("photo-1609920658906-8223bd289001"),
+      p("photo-1626621341517-bbf3d9990a23"),
+      p("photo-1529108190281-9a4f620bc2d8"),
+      p("photo-1514395462725-fb4566210144"),
+      p("photo-1512343879784-a960bf40e7f2"),
     ],
     alts: [
-      "Golden sunrise over a sea of clouds",
-      "A wooden boat on a still alpine lake",
-      "A hidden cove where a waterfall meets the sea",
-      "A camper van on an empty desert road",
-      "A rowboat on a turquoise mountain lake",
-      "Mist drifting through a pine forest",
+      "The Golden Temple mirrored in its sacred pool",
+      "A houseboat drifting through Kerala's backwaters",
+      "Monasteries above the high desert of Ladakh",
+      "Uluru glowing red at sunset",
+      "Melbourne's skyline along the river",
+      "Palm-lined sands of a Goa beach",
     ],
     caption: {
-      title: "Off-Road Desert Run",
-      copy: "Chase the horizon across red earth and open sky.",
+      title: "Sacred Trails & Red Earth",
+      copy: "Golden temples, palm-fringed backwaters and the outback's red heart.",
     },
   },
 ];
@@ -163,25 +163,39 @@ export const wander = {
   copy: "No rushed checklists. A short list of destinations we keep returning to — with local guides who feel like old friends and rooms that earn the journey there.",
   plates: [
     {
-      key: "kyoto",
-      name: "Kyoto",
-      region: "Japan",
-      coord: "35.0°N · 135.8°E",
-      img: u("photo-1493976040374-85c8e12f0c0e", 760, 80),
+      key: "jaipur",
+      name: "Jaipur",
+      region: "India",
+      coord: "26.9°N · 75.8°E",
+      img: u("photo-1477587458883-47145ed94245", 640, 78),
     },
     {
-      key: "santorini",
-      name: "Santorini",
-      region: "Greece",
-      coord: "36.4°N · 25.4°E",
-      img: u("photo-1570077188670-e3a8d69ac5ff", 980, 82),
+      key: "kerala",
+      name: "Kerala",
+      region: "India",
+      coord: "9.5°N · 76.3°E",
+      img: u("photo-1602216056096-3b40cc0c9944", 760, 80),
     },
     {
-      key: "bali",
-      name: "Bali",
-      region: "Indonesia",
-      coord: "8.4°S · 115.2°E",
-      img: u("photo-1518548419970-58e3b4079ab2", 760, 80),
+      key: "agra",
+      name: "Agra",
+      region: "India",
+      coord: "27.2°N · 78.0°E",
+      img: u("photo-1548013146-72479768bada", 980, 82),
+    },
+    {
+      key: "sydney",
+      name: "Sydney",
+      region: "Australia",
+      coord: "33.9°S · 151.2°E",
+      img: u("photo-1540202404-a2f29016b523", 760, 80),
+    },
+    {
+      key: "gold-coast",
+      name: "Gold Coast",
+      region: "Australia",
+      coord: "28.0°S · 153.4°E",
+      img: u("photo-1506372023823-741c83b836fe", 640, 78),
     },
   ],
   stats: [
@@ -192,25 +206,25 @@ export const wander = {
 } as const;
 
 // Bottom "app showcase" — a 3D phone mockup standing on a ledge against a
-// misty Japanese pagoda + cherry-blossom scene.
+// rugged Australian coastline scene.
 export const showcase = {
-  bg: u("photo-1773563163201-9a9a7dfa55d4", 2200, 80), // misty temple wall + plum blossoms
-  appPhoto: u("photo-1518548419970-58e3b4079ab2", 800, 82), // sunset temple (in-app)
+  bg: u("photo-1553603227-2358aabe821e", 2200, 80), // Australian coastline
+  appPhoto: u("photo-1529253355930-ddbe423a2ac7", 800, 82), // Gateway of India (in-app)
   // section header
   eyebrow: "The EG Travel app",
-  heading: "Your whole Japan trip, handled from your pocket.",
-  headingAccent: "Japan",
+  heading: "Your whole India & Australia trip, handled from your pocket.",
+  headingAccent: "India & Australia",
   sub: "Visas, itineraries and local guides — sorted before you land and tracked from one calm, simple app.",
   // phone-screen mock
   brand: "EG TRAVEL",
-  appHeadline: "Visas for Japan, made simple",
+  appHeadline: "Visas for India & Australia, made simple",
   appSub: "Complete visa support — 100% remote",
   cta: "Get visa assistance",
   priceNote: "From",
   price: "$135",
   priceUnit: "/ person",
   discount: "Discounts for groups of 2+",
-  ticker: ["Kyoto", "Osaka", "Nara", "Tokyo", "Hakone", "Nikko"],
+  ticker: ["Jaipur", "Agra", "Sydney", "Goa", "Uluru", "Kerala"],
 } as const;
 
 export const experiences: Experience[] = [
