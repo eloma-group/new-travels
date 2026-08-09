@@ -65,16 +65,16 @@ export const momentSets: MomentSet[] = [
       p("photo-1564507592333-c60657eea523"),
       p("photo-1599661046289-e31897846e41"),
       p("photo-1614082242765-7c98ca0f3df3"),
-      p("photo-1580191947416-62d35a55e71d"),
-      p("photo-1561361513-2d000a50f0dc"),
+      p("photo-1477586957327-847a0f3f4fe3"),
+      p("photo-1615836245337-f5b9b2303f10"),
       p("photo-1567157577867-05ccb1388e66"),
     ],
     alts: [
       "The Taj Mahal glowing at sunrise",
       "The pink façade of Hawa Mahal in Jaipur",
       "Ornate courtyard of a Rajasthan city palace",
-      "A desert fort rising over Rajasthan",
-      "Ghats and temples along the Ganges at Varanasi",
+      "Jal Mahal, the water palace of Jaipur",
+      "Udaipur's City Palace on Lake Pichola",
       "A colourful street in old India",
     ],
     caption: {
@@ -88,7 +88,7 @@ export const momentSets: MomentSet[] = [
       p("photo-1523482580672-f109ba8cb9be"),
       p("photo-1582672060674-bc2bd808a8b5"),
       p("photo-1523731407965-2430cd12f5e4"),
-      p("photo-1562184552-997c461abbe6"),
+      p("photo-1494233892892-84542a694e72"),
       p("photo-1552465011-b4e21bf6e79a"),
     ],
     alts: [
@@ -96,7 +96,7 @@ export const momentSets: MomentSet[] = [
       "Sydney Harbour Bridge at dusk",
       "Turquoise coral of the Great Barrier Reef",
       "White sand swirls of Whitehaven Beach",
-      "Surfers at Bondi Beach",
+      "The Sea Cliff Bridge along the New South Wales coast",
       "Eucalyptus valleys of the Blue Mountains",
     ],
     caption: {
@@ -208,8 +208,8 @@ export const wander = {
 // Bottom "app showcase" — a 3D phone mockup standing on a ledge against a
 // rugged Australian coastline scene.
 export const showcase = {
-  bg: u("photo-1553603227-2358aabe821e", 2200, 80), // Australian coastline
-  appPhoto: u("photo-1529253355930-ddbe423a2ac7", 800, 82), // Gateway of India (in-app)
+  bg: u("photo-1624138784614-87fd1b6528f8", 2200, 80), // Sydney Opera House & Harbour Bridge
+  appPhoto: u("photo-1598324789736-4861f89564a0", 800, 82), // Taj Mahal, Agra (in-app)
   // section header
   eyebrow: "The EG Travel app",
   heading: "Your whole India & Australia trip, handled from your pocket.",
