@@ -212,12 +212,12 @@ export default function Destination() {
               <svg
                 viewBox="0 0 640 120"
                 fill="none"
-                className="h-24 w-[102%] max-w-none text-brown"
+                className="h-24 w-[102%] max-w-none overflow-visible text-brown"
                 style={{ opacity: shown ? 1 : 0, transition: "opacity .8s ease .4s" }}
               >
                 <path
                   id="wanderRoute"
-                  d="M30,104 C 200,20 440,20 610,104"
+                  d="M30,104 C 150,-48 490,-48 610,104"
                   stroke="currentColor"
                   strokeOpacity="0.55"
                   strokeWidth="2.5"
