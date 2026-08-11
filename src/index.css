@@ -12,6 +12,15 @@
   font-display: swap;
 }
 
+/* Heading typeface — used only for h1–h6 (weight/size/style unchanged) */
+@font-face {
+  font-family: "Eloma Sans Heading";
+  src: url("/fonts/ElomaSansHeading.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============================================================
    Theme tokens → generate Tailwind utilities
    (bg-cream, text-ink, shadow-soft-md, animate-fade-up, …)
@@ -42,6 +51,8 @@
   /* Typeface */
   --font-sans: "Eloma Sans", "Plus Jakarta Sans", "DM Sans", ui-sans-serif,
     system-ui, sans-serif;
+  --font-heading: "Eloma Sans Heading", "Eloma Sans", "Plus Jakarta Sans",
+    "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-script: "Kaushan Script", "Segoe Script", cursive;
 
   /* Soft shadows */
@@ -113,6 +124,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
   }
   :focus-visible {
     outline: 2px solid var(--color-gold-deep);
