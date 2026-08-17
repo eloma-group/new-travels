@@ -1,7 +1,7 @@
 import Hero from "./components/Hero";
 import Destination from "./components/Destination";
 import Moments from "./components/Moments";
-import Postcards from "./components/Postcards";
+// import Postcards from "./components/Postcards";
 import Showcase from "./components/Showcase";
 import Footer from "./components/Footer";
 
@@ -11,7 +11,7 @@ export default function App() {
       <Hero />
       <Destination />
       <Moments />
-      <Postcards />
+      {/* <Postcards /> */}
       <Showcase />
       <Footer />
     </main>
