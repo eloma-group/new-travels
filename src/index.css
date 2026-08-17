@@ -261,6 +261,24 @@
   }
 }
 
+/* Footer route divider — dashes drift along the arc from hub to hub */
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+/* Footer night sky — stars breathe rather than blink */
+@keyframes star-breathe {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
 /* ============================================================
    Respect reduced motion
    ============================================================ */

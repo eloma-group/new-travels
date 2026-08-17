@@ -124,6 +124,29 @@ export const Plane = ({ className }: P) => (
   </svg>
 );
 
+export const Phone = ({ className }: P) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M6.5 3.5h2.2l1.5 3.7-1.8 1.4a12 12 0 0 0 5.5 5.5l1.4-1.8 3.7 1.5v2.2a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const Mail = ({ className }: P) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <rect x="3" y="5.5" width="18" height="13" rx="3" stroke="currentColor" strokeWidth="1.6" />
+    <path
+      d="m4.5 8.5 6.4 4.4a2 2 0 0 0 2.2 0l6.4-4.4"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 export const Play = ({ className }: P) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />

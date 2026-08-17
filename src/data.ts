@@ -227,6 +227,95 @@ export const showcase = {
   ticker: ["Jaipur", "Agra", "Sydney", "Goa", "Uluru", "Kerala"],
 } as const;
 
+// ============================================================
+// Footer — company details, link columns, hubs and socials.
+// NOTE: `abn` and the social profile URLs are placeholders — drop the real
+// EG Travel values in here and the footer picks them up (an empty `abn`
+// simply hides its chip).
+// ============================================================
+const ADDRESS = "71 Gipps Street, Collingwood, Melbourne, VIC 3066, Australia";
+
+export const footer = {
+  tagline:
+    "Hand-crafted journeys through India and Australia — visas, itineraries and local guides, handled end to end.",
+
+  // CTA band
+  script: "wherever next",
+  ctaHeading: ["Tell us where you", "want to wake up."],
+  ctaCopy:
+    "One note from you and a real person — not a form — plans the rest. Join the list for quiet drops of new routes and seasonal windows.",
+  ctaPlaceholder: "you@example.com",
+  ctaNote: "No spam. Two or three notes a year, only when something is worth the trip.",
+
+  phone: { label: "1800 054 555", href: "tel:1800054555" },
+  email: { label: "connect@egtravel.com.au", href: "mailto:connect@egtravel.com.au" },
+  address: {
+    lines: ["71 Gipps Street, Collingwood,", "Melbourne, VIC 3066, Australia"],
+    maps: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`,
+  },
+  abn: "", // e.g. "12 693 138 733"
+  company: "EG Travel Australia Pty Ltd (Unit of Eloma Group)",
+
+  // Live local time at either end of the route we fly most.
+  hubs: [
+    { city: "Melbourne", region: "Australia", tz: "Australia/Melbourne" },
+    { city: "New Delhi", region: "India", tz: "Asia/Kolkata" },
+  ],
+
+  columns: [
+    {
+      heading: "Destinations",
+      links: [
+        { label: "Jaipur", href: "#journeys" },
+        { label: "Kerala", href: "#journeys" },
+        { label: "Agra", href: "#journeys" },
+        { label: "Sydney", href: "#journeys" },
+        { label: "Gold Coast", href: "#journeys" },
+        { label: "All destinations", href: "#journeys" },
+      ],
+    },
+    {
+      heading: "Journeys",
+      links: [
+        { label: "Visa assistance", href: "#app" },
+        { label: "Flight bookings", href: "#packages" },
+        { label: "Custom itineraries", href: "#packages" },
+        { label: "Group departures", href: "#packages" },
+        { label: "Airport transfers", href: "#packages" },
+        { label: "Travel insurance", href: "#packages" },
+      ],
+    },
+    {
+      heading: "Company",
+      links: [
+        { label: "About us", href: "#" },
+        { label: "Our journey", href: "#" },
+        { label: "Careers", href: "#" },
+        { label: "Blog", href: "#" },
+        { label: "Media", href: "#" },
+        { label: "Contact", href: "#contact" },
+      ],
+    },
+    {
+      heading: "Support",
+      links: [
+        { label: "Help centre", href: "#" },
+        { label: "FAQ", href: "#" },
+        { label: "Manage booking", href: "#" },
+        { label: "Travel advisories", href: "#" },
+        { label: "Booking conditions", href: "#" },
+        { label: "Cancellation policy", href: "#" },
+      ],
+    },
+  ],
+
+  legal: [
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Use", href: "#" },
+    { label: "Booking Conditions", href: "#" },
+  ],
+} as const;
+
 export const experiences: Experience[] = [
   build("photo-1518548419970-58e3b4079ab2", {
     eyebrow: "Island of the Gods",

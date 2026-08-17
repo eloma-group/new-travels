@@ -2,6 +2,7 @@ import Hero from "./components/Hero";
 import Destination from "./components/Destination";
 import Moments from "./components/Moments";
 import Showcase from "./components/Showcase";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Destination />
       <Moments />
       <Showcase />
+      <Footer />
     </main>
   );
 }
