@@ -227,6 +227,63 @@ export const showcase = {
   ticker: ["Jaipur", "Agra", "Sydney", "Goa", "Uluru", "Kerala"],
 } as const;
 
+// "Postcards" — a scattered print-wall collage: polaroids, a clipping, a
+// boarding pass and a stamp pinned around a centred editorial core.
+export const postcards = {
+  chip: "Field notes",
+  script: "postcards from",
+  heading: ["the long", "way round"],
+  copy: "Frames our travellers brought home — a palace gate at first light, a backwater at dusk, the reef from the edge of the boat. No stock, no filters. Just the long way round.",
+  cta: "Open the journal",
+  meta: "42 stories · new one most weeks",
+  watermark: "wander",
+
+  jaipur: {
+    img: u("photo-1477587458883-47145ed94245", 700, 78),
+    alt: "The pink façade of Hawa Mahal in Jaipur",
+    name: "Jaipur",
+    line: "The gatekeeper who opens Amber at dawn",
+    tag: "Travel guides",
+  },
+  kerala: {
+    img: u("photo-1602216056096-3b40cc0c9944", 700, 78),
+    alt: "A houseboat drifting through Kerala's palm-lined backwaters",
+    name: "Kerala",
+    line: "How to spend a week on the backwaters",
+    tag: "Slow travel",
+  },
+  traveller: {
+    img: u("photo-1544005313-94ddf0286df2", 620, 76),
+    alt: "A traveller on the road at golden hour",
+  },
+  street: {
+    img: u("photo-1512343879784-a960bf40e7f2", 420, 74),
+    alt: "Palm-lined sands of a Goa beach",
+  },
+  stamp: {
+    img: u("photo-1529108190281-9a4f620bc2d8", 520, 76),
+    alt: "Uluru glowing red at sunset",
+    place: "Uluru",
+    coord: "25.3°S · 131.0°E",
+    note: "Entered NT · 2026",
+  },
+  reel: {
+    img: u("photo-1506973035872-a4ec16b8e8d9", 1000, 80),
+    alt: "Sydney Opera House on the harbour",
+    place: "Sydney Harbour, NSW",
+    length: "2 min film",
+  },
+  pass: {
+    from: "MEL",
+    to: "DEL",
+    route: "Melbourne → New Delhi",
+    seat: "12A",
+    gate: "07",
+    board: "21:40",
+  },
+  stat: { value: "12k", label: "travellers joined last season" },
+} as const;
+
 // ============================================================
 // Footer — company details, link columns, hubs and socials.
 // NOTE: `abn` and the social profile URLs are placeholders — drop the real
