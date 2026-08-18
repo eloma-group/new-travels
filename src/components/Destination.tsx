@@ -76,10 +76,17 @@ export default function Destination() {
     shown
       ? { animation: "fade-up 0.85s cubic-bezier(0.22,1,0.36,1) both", animationDelay: `${i * 0.09}s` }
       : { opacity: 0 };
-  const pop = (delay: number): React.CSSProperties =>
-    shown
-      ? { animation: "float-in 0.95s cubic-bezier(0.22,1,0.36,1) both", animationDelay: `${delay}s` }
-      : { opacity: 0 };
+  // deck entrance: the centre portal rises, each flank glides in from its own
+  // side — inner pair first, outer pair 0.15s behind it.
+  const deckIn = (i: number): React.CSSProperties => {
+    if (!shown) return { opacity: 0 };
+    const name = i === 2 ? "deck-in-up" : i < 2 ? "deck-in-left" : "deck-in-right";
+    const delay = i === 2 ? 0.05 : i === 1 || i === 3 ? 0.2 : 0.35;
+    return {
+      animation: `${name} 0.95s cubic-bezier(0.22,1,0.36,1) both`,
+      animationDelay: `${delay}s`,
+    };
+  };
 
   const rating = useCountUp(4.9, shown);
   const places = useCountUp(120, shown);
@@ -97,7 +104,7 @@ export default function Destination() {
         {/* warm radial wash for depth */}
         <div
           className="absolute inset-0"
-          style={{ background: "radial-gradient(125% 92% at 50% 32%, #fffdf9 0%, #f8f5ef 50%, #efe9df 100%)" }}
+          style={{ background: "radial-gradient(120% 90% at 50% 30%, #fffefb 0%, #faf7f1 46%, #f0eae0 100%)" }}
         />
 
         {/* faint map graticule (lat/long grid), faded toward the edges */}
@@ -105,7 +112,7 @@ export default function Destination() {
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, transparent 0 84px, rgba(122,92,62,0.05) 84px 85px), repeating-linear-gradient(90deg, transparent 0 84px, rgba(122,92,62,0.05) 84px 85px)",
+              "repeating-linear-gradient(0deg, transparent 0 84px, rgba(122,92,62,0.08) 84px 85px), repeating-linear-gradient(90deg, transparent 0 84px, rgba(122,92,62,0.08) 84px 85px)",
             maskImage: "radial-gradient(120% 95% at 50% 48%, #000 36%, transparent 80%)",
             WebkitMaskImage: "radial-gradient(120% 95% at 50% 48%, #000 36%, transparent 80%)",
           }}
@@ -148,7 +155,7 @@ export default function Destination() {
 
         {/* fine grain for tactile, printed-map depth */}
         <div
-          className="absolute inset-0 opacity-[0.4] mix-blend-multiply"
+          className="absolute inset-0 opacity-[0.12] mix-blend-multiply"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")",
@@ -202,7 +209,7 @@ export default function Destination() {
           className="mt-16 [perspective:1600px] sm:mt-20"
         >
           <div
-            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] will-change-transform sm:flex-row sm:items-end sm:gap-6 sm:pt-28 lg:gap-9 xl:gap-12"
+            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] will-change-transform sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
           >
             {/* flight route + aeroplane — floats forward in 3D, clear above the arches */}
             <div
@@ -245,23 +252,25 @@ export default function Destination() {
               const feature = i === 2;
               const edge = i === 0 || i === wander.plates.length - 1;
               return (
-                <div key={p.key} style={depth[i]} className={`will-change-transform ${edge ? "hidden lg:block" : ""}`}>
-                  <div style={pop(feature ? 0.05 : edge ? 0.24 : 0.18)}>
+                <div key={p.key} style={depth[i]} className={`will-change-transform ${edge ? "hidden xl:block" : ""}`}>
+                  <div style={deckIn(i)}>
                     <a
                       href="#packages"
                       aria-label={`Explore ${p.name}, ${p.region}`}
-                      className="group relative block will-change-transform transition-transform duration-500 ease-out hover:-translate-y-2 focus-visible:-translate-y-2"
+                      className="group relative block will-change-transform transition-transform duration-500 ease-out hover:-translate-y-3 focus-visible:-translate-y-3"
                     >
+                      {/* warm ground-glow that blooms under the portal on hover */}
+                      <span className="pointer-events-none absolute inset-x-6 bottom-1 -z-10 h-14 rounded-full bg-brown/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
                       {/* outer cabin wall panel — second frame */}
-                      <div className="rounded-[46%/32%] bg-gradient-to-b from-[#ece3d4] to-[#d8ccb9] p-[0.6rem] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.6),inset_0_2px_3px_rgba(255,255,255,0.8),inset_0_-3px_7px_rgba(122,92,62,0.25)] ring-1 ring-brown/15 sm:p-3">
+                      <div className="rounded-[46%/32%] bg-gradient-to-b from-[#f5eee1] via-[#e8dece] to-[#d5c8b3] p-[0.6rem] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.55),inset_0_2px_2px_rgba(255,255,255,0.95),inset_0_-3px_7px_rgba(122,92,62,0.28)] ring-1 ring-brown/15 transition-shadow duration-500 ease-out group-hover:shadow-[0_58px_90px_-34px_rgba(58,44,24,0.66),inset_0_2px_2px_rgba(255,255,255,1),inset_0_-3px_7px_rgba(122,92,62,0.3)] group-hover:ring-brown/35 sm:p-3">
                       {/* airplane cabin window — moulded plastic bezel */}
                       <div
-                        className={`relative rounded-[44%/30%] bg-gradient-to-b from-[#f6f1e8] to-[#e5dccc] p-[0.9rem] shadow-[inset_0_2px_3px_rgba(255,255,255,0.9),inset_0_-4px_8px_rgba(122,92,62,0.2)] ring-1 ring-brown/10 sm:p-4 ${
+                        className={`relative rounded-[44%/30%] bg-gradient-to-b from-[#fffdf7] via-[#f4eee3] to-[#e3d9c7] p-[0.9rem] shadow-[inset_0_2px_2px_rgba(255,255,255,1),inset_0_-4px_8px_rgba(122,92,62,0.22)] ring-1 ring-brown/10 transition-shadow duration-500 group-hover:ring-brown/25 sm:p-4 ${
                           feature
-                            ? "h-[22rem] w-64 sm:h-[27rem] sm:w-72 lg:h-[31rem] lg:w-[21rem] xl:h-[34rem] xl:w-[23rem]"
+                            ? "aspect-[27/40] w-64 sm:w-[clamp(12rem,30vw,20rem)] xl:w-[clamp(16rem,20vw,23rem)]"
                             : edge
-                            ? "h-[14rem] w-40 sm:h-[16.5rem] sm:w-44 lg:h-[19rem] lg:w-52 xl:h-[21rem] xl:w-56"
-                            : "h-[17rem] w-48 sm:h-[20rem] sm:w-52 lg:h-[23rem] lg:w-60 xl:h-[25rem] xl:w-64"
+                            ? "aspect-[2/3] w-40 xl:w-[clamp(9.5rem,12vw,14rem)]"
+                            : "aspect-[16/25] w-48 sm:w-[clamp(8.5rem,21vw,14rem)] xl:w-[clamp(11rem,14vw,16rem)]"
                         }`}
                       >
                         {/* recessed glass pane */}
@@ -270,15 +279,17 @@ export default function Destination() {
                             src={p.img}
                             alt={`${p.name}, ${p.region}`}
                             loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            className="h-full w-full object-cover transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.08] group-hover:brightness-[1.06] group-hover:saturate-[1.12]"
                           />
-                          {/* cabin-dim + sky wash */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
-                          {/* raked glass reflection */}
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/30 via-white/5 to-transparent" />
+                          {/* cabin-dim — kept light so the view stays crisp */}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                          {/* raked glass highlight — a defined streak, not a haze */}
+                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.5)_0%,rgba(255,255,255,0.14)_20%,transparent_42%)]" />
+                          {/* travelling sheen on hover */}
+                          <span className="pointer-events-none absolute -inset-y-10 -left-1/2 w-1/3 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[115%] group-hover:opacity-100" />
                           {/* inner glass rim */}
-                          <div className="pointer-events-none absolute inset-0 rounded-[42%/28%] ring-1 ring-inset ring-white/20" />
-                          <span className="glass absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white">
+                          <div className="pointer-events-none absolute inset-0 rounded-[42%/28%] ring-1 ring-inset ring-white/35 transition-shadow duration-500 group-hover:ring-white/60" />
+                          <span className="glass absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white shadow-[0_6px_16px_-8px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:-translate-y-0.5">
                             {p.region}
                           </span>
                         </div>
@@ -288,11 +299,11 @@ export default function Destination() {
                       </div>
 
                       {/* engraved brass coordinate nameplate */}
-                      <div className="brass relative z-10 mx-auto -mt-5 w-[86%] rounded-xl px-4 py-2 text-center text-cream transition-transform duration-500 group-hover:-translate-y-0.5">
+                      <div className="brass relative z-10 mx-auto -mt-5 w-[86%] rounded-xl px-4 py-2 text-center text-cream transition-[transform,filter] duration-500 group-hover:-translate-y-1 group-hover:brightness-110">
                         <span className="absolute left-2.5 top-1/2 h-1 w-1 -translate-y-1/2 rounded-full bg-black/25" />
                         <span className="absolute right-2.5 top-1/2 h-1 w-1 -translate-y-1/2 rounded-full bg-black/25" />
                         <p className="text-sm font-semibold leading-tight">{p.name}</p>
-                        <p className="mt-0.5 text-[0.6rem] uppercase tracking-[0.22em] text-cream/75">
+                        <p className="mt-0.5 text-[0.6rem] uppercase tracking-[0.22em] text-cream/85">
                           {p.coord}
                         </p>
                       </div>

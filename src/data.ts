@@ -402,11 +402,11 @@ export const experiences: Experience[] = [
     place: "Kyoto, Japan",
     copy: "Lantern-lit alleys, ancient pagodas and quiet temple gardens glowing at dusk.",
   }),
-  build("photo-1509316785289-025f5b846b35", {
-    eyebrow: "The Red Earth",
-    title: "Canyons of the Wild Desert",
-    card: "Red Desert",
-    place: "Arizona, USA",
-    copy: "Towering mesas, endless horizons and campfire skies across the open desert.",
+  build("photo-1587135941948-670b381f08ce", {
+    eyebrow: "A Monument to Love",
+    title: "Golden Hour at the Taj Mahal",
+    card: "Taj Mahal",
+    place: "Agra, India",
+    copy: "White marble turning amber at sunrise, with private early access before the crowds arrive.",
   }),
 ];
