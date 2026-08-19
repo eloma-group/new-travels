@@ -1,4 +1,4 @@
-// Minimal inline stroke icons — inherit currentColor, no external deps.
+// Minimal inline stroke icons - inherit currentColor, no external deps.
 type P = { className?: string };
 
 export const Arrow = ({ className }: P) => (

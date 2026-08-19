@@ -27,11 +27,11 @@ function useCountUp(target: number, run: boolean, dur = 1300) {
 
 // per-portal 3D placement in the tilting deck: symmetric wrap-around toward centre
 const depth: React.CSSProperties[] = [
-  { transform: "translateZ(0px) rotateY(16deg)" }, //   far-left — furthest, most yawed
-  { transform: "translateZ(30px) rotateY(9deg)" }, //   left     — yawed toward centre
-  { transform: "translateZ(74px)" }, //                 center   — pushed forward (feature)
-  { transform: "translateZ(30px) rotateY(-9deg)" }, //  right    — yawed toward centre
-  { transform: "translateZ(0px) rotateY(-16deg)" }, //  far-right — furthest, most yawed
+  { transform: "translateZ(0px) rotateY(16deg)" }, //   far-left - furthest, most yawed
+  { transform: "translateZ(30px) rotateY(9deg)" }, //   left    - yawed toward centre
+  { transform: "translateZ(74px)" }, //                 center  - pushed forward (feature)
+  { transform: "translateZ(30px) rotateY(-9deg)" }, //  right   - yawed toward centre
+  { transform: "translateZ(0px) rotateY(-16deg)" }, //  far-right - furthest, most yawed
 ];
 
 export default function Destination() {
@@ -77,7 +77,7 @@ export default function Destination() {
       ? { animation: "fade-up 0.85s cubic-bezier(0.22,1,0.36,1) both", animationDelay: `${i * 0.09}s` }
       : { opacity: 0 };
   // deck entrance: the centre portal rises, each flank glides in from its own
-  // side — inner pair first, outer pair 0.15s behind it.
+  // side - inner pair first, outer pair 0.15s behind it.
   const deckIn = (i: number): React.CSSProperties => {
     if (!shown) return { opacity: 0 };
     const name = i === 2 ? "deck-in-up" : i < 2 ? "deck-in-left" : "deck-in-right";
@@ -162,6 +162,40 @@ export default function Destination() {
             backgroundSize: "140px 140px",
           }}
         />
+
+        {/* flight route + aeroplane - drawn in the compass rose's own 400x400 frame,
+            so the dotted arc rides exactly on its outer ring (r=197 about 200,200) */}
+        <svg
+          viewBox="0 0 400 400"
+          fill="none"
+          className="absolute left-1/2 top-[54%] hidden h-[44rem] w-[44rem] max-w-none -translate-x-1/2 -translate-y-1/2 overflow-visible text-brown sm:block"
+          style={{ opacity: shown ? 1 : 0, transition: "opacity .8s ease .4s" }}
+        >
+          {/* endpoints sit at +/-62deg from the top of the ring */}
+          <path
+            id="wanderRoute"
+            d="M26.1,107.5 A 197,197 0 0 1 373.9,107.5"
+            stroke="currentColor"
+            strokeOpacity="0.55"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeDasharray="0.6 6.6"
+          />
+          <circle cx="26.1" cy="107.5" r="2.3" className="fill-brown" />
+          <circle cx="373.9" cy="107.5" r="2.3" className="fill-brown" />
+          {!reduce && (
+            <g className="fill-brown-deep">
+              {/* top-down aeroplane silhouette, nose along +x (rotate=auto aligns it) */}
+              <path
+                transform="scale(0.5)"
+                d="M13,0 L3,-1 L-2,-10 L-4,-10 L-1,-1.2 L-8,-1 L-10,-4 L-11,-4 L-11,-0.6 L-12,0 L-11,0.6 L-11,4 L-10,4 L-8,1 L-1,1.2 L-4,10 L-2,10 L3,1 Z"
+              />
+              <animateMotion dur="7s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1">
+                <mpath href="#wanderRoute" />
+              </animateMotion>
+            </g>
+          )}
+        </svg>
       </div>
 
       <div className="shell relative">
@@ -211,43 +245,6 @@ export default function Destination() {
           <div
             className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] will-change-transform sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
           >
-            {/* flight route + aeroplane — floats forward in 3D, clear above the arches */}
-            <div
-              className="pointer-events-none absolute inset-x-0 top-1 hidden justify-center sm:flex"
-              style={{ transform: "translateZ(96px)" }}
-            >
-              <svg
-                viewBox="0 0 640 120"
-                fill="none"
-                className="h-24 w-[102%] max-w-none overflow-visible text-brown"
-                style={{ opacity: shown ? 1 : 0, transition: "opacity .8s ease .4s" }}
-              >
-                <path
-                  id="wanderRoute"
-                  d="M30,104 C 150,-48 490,-48 610,104"
-                  stroke="currentColor"
-                  strokeOpacity="0.55"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeDasharray="1 12"
-                />
-                <circle cx="30" cy="104" r="4" className="fill-brown" />
-                <circle cx="610" cy="104" r="4" className="fill-brown" />
-                {!reduce && (
-                  <g className="fill-brown-deep">
-                    {/* top-down aeroplane silhouette, nose along +x (rotate=auto aligns it) */}
-                    <path
-                      transform="scale(0.85)"
-                      d="M13,0 L3,-1 L-2,-10 L-4,-10 L-1,-1.2 L-8,-1 L-10,-4 L-11,-4 L-11,-0.6 L-12,0 L-11,0.6 L-11,4 L-10,4 L-8,1 L-1,1.2 L-4,10 L-2,10 L3,1 Z"
-                    />
-                    <animateMotion dur="7s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1">
-                      <mpath href="#wanderRoute" />
-                    </animateMotion>
-                  </g>
-                )}
-              </svg>
-            </div>
-
             {wander.plates.map((p, i) => {
               const feature = i === 2;
               const edge = i === 0 || i === wander.plates.length - 1;
@@ -261,9 +258,9 @@ export default function Destination() {
                     >
                       {/* warm ground-glow that blooms under the portal on hover */}
                       <span className="pointer-events-none absolute inset-x-6 bottom-1 -z-10 h-14 rounded-full bg-brown/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-                      {/* outer cabin wall panel — second frame */}
+                      {/* outer cabin wall panel - second frame */}
                       <div className="rounded-[46%/32%] bg-gradient-to-b from-[#f5eee1] via-[#e8dece] to-[#d5c8b3] p-[0.6rem] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.55),inset_0_2px_2px_rgba(255,255,255,0.95),inset_0_-3px_7px_rgba(122,92,62,0.28)] ring-1 ring-brown/15 transition-shadow duration-500 ease-out group-hover:shadow-[0_58px_90px_-34px_rgba(58,44,24,0.66),inset_0_2px_2px_rgba(255,255,255,1),inset_0_-3px_7px_rgba(122,92,62,0.3)] group-hover:ring-brown/35 sm:p-3">
-                      {/* airplane cabin window — moulded plastic bezel */}
+                      {/* airplane cabin window - moulded plastic bezel */}
                       <div
                         className={`relative rounded-[44%/30%] bg-gradient-to-b from-[#fffdf7] via-[#f4eee3] to-[#e3d9c7] p-[0.9rem] shadow-[inset_0_2px_2px_rgba(255,255,255,1),inset_0_-4px_8px_rgba(122,92,62,0.22)] ring-1 ring-brown/10 transition-shadow duration-500 group-hover:ring-brown/25 sm:p-4 ${
                           feature
@@ -281,9 +278,9 @@ export default function Destination() {
                             loading="lazy"
                             className="h-full w-full object-cover transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.08] group-hover:brightness-[1.06] group-hover:saturate-[1.12]"
                           />
-                          {/* cabin-dim — kept light so the view stays crisp */}
+                          {/* cabin-dim - kept light so the view stays crisp */}
                           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                          {/* raked glass highlight — a defined streak, not a haze */}
+                          {/* raked glass highlight - a defined streak, not a haze */}
                           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.5)_0%,rgba(255,255,255,0.14)_20%,transparent_42%)]" />
                           {/* travelling sheen on hover */}
                           <span className="pointer-events-none absolute -inset-y-10 -left-1/2 w-1/3 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[115%] group-hover:opacity-100" />

@@ -12,7 +12,7 @@ import { postcards as pc } from "../data";
 /* Shared rail sizing + the switch to free-floating at xl. */
 const PIN = "w-[15rem] shrink-0 snap-center xl:pointer-events-auto xl:absolute";
 
-/* Pointer drift — magnitude in px, applied to the outer node so the inner
+/* Pointer drift - magnitude in px, applied to the outer node so the inner
    card keeps its own rotation. */
 const drift = (x: number, y: number): React.CSSProperties => ({
   transform: `translate3d(calc(var(--mx, 0) * ${x}px), calc(var(--my, 0) * ${y}px), 0)`,
@@ -298,7 +298,7 @@ export default function Postcards() {
               />
               <button
                 type="button"
-                aria-label={`Play film — ${pc.reel.place}`}
+                aria-label={`Play film- ${pc.reel.place}`}
                 className="absolute inset-0 grid place-items-center"
               >
                 <span className="grid h-14 w-14 place-items-center rounded-full bg-white/90 text-ink shadow-soft-md backdrop-blur-sm transition-transform duration-300 hover:scale-110">

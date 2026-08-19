@@ -70,7 +70,7 @@ export default function Moments() {
       id="gallery"
       className="relative z-10 -mt-6 rounded-t-[32px] bg-cream pb-20 pt-20 shadow-[0_-22px_60px_-30px_rgba(42,36,32,0.5)] sm:-mt-8 sm:rounded-t-[44px] sm:pb-28 sm:pt-28"
     >
-      {/* grab handle — signals the section lifts up over the hero */}
+      {/* grab handle - signals the section lifts up over the hero */}
       <span
         aria-hidden="true"
         className="absolute left-1/2 top-4 h-1.5 w-12 -translate-x-1/2 rounded-full bg-ink/12"
@@ -105,7 +105,7 @@ export default function Moments() {
         </p>
       </div>
 
-      {/* full-width gallery — 6 across on desktop, swipeable on smaller screens */}
+      {/* full-width gallery- 6 across on desktop, swipeable on smaller screens */}
       <div className="no-scrollbar mt-14 flex items-start gap-3 overflow-x-auto px-4 py-2 sm:gap-4 sm:px-6 lg:gap-5 lg:overflow-x-visible lg:px-8">
         {momentLayout.map((slot, i) => {
           const src = active.images[i];

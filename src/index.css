@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   ElomaSans — the single brand typeface
+   ElomaSans - the single brand typeface
    ============================================================ */
 @font-face {
   font-family: "Eloma Sans";
@@ -12,7 +12,7 @@
   font-display: swap;
 }
 
-/* Heading typeface — used only for h1–h6 (weight/size/style unchanged) */
+/* Heading typeface - used only for h1–h6 (weight/size/style unchanged) */
 @font-face {
   font-family: "Eloma Sans Heading";
   src: url("/fonts/ElomaSansHeading.otf") format("opentype");
@@ -42,7 +42,7 @@
   --color-forest-soft: #5c8a6b;
   --color-sage: #e7efe6;
 
-  /* Warm browns — from the "Destination" wordmark. Accent for lower/future
+  /* Warm browns - from the "Destination" wordmark. Accent for lower/future
      sections in place of the gold/orange. */
   --color-brown: #7a5c3e;
   --color-brown-deep: #5b4632;
@@ -172,7 +172,7 @@
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
 }
 
-/* Engraved brass nameplate — warm metal with a thin top highlight (Wander Index) */
+/* Engraved brass nameplate - warm metal with a thin top highlight (Wander Index) */
 @utility brass {
   background: linear-gradient(180deg, #a07d54 0%, #7a5c3e 46%, #5b4632 100%);
   border: 1px solid rgba(91, 70, 50, 0.9);
@@ -225,7 +225,7 @@
   }
 }
 
-/* Wander deck entrance — centre rises, flanks glide in from their own side */
+/* Wander deck entrance - centre rises, flanks glide in from their own side */
 @keyframes deck-in-up {
   from {
     opacity: 0;
@@ -254,6 +254,42 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Invitation wordmark - each word wipes up from its own baseline */
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(88%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The cut-out traveller rises onto the summit once the words have landed */
+@keyframes traveller-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 44px, 0) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The ridgeline drifts inside the letterforms, so the words never sit still.
+   --band is the word's own vertical crop of the shared photograph. */
+@keyframes fill-pan {
+  0%,
+  100% {
+    background-position: 50% var(--band, 50%);
+  }
+  50% {
+    background-position: 54% calc(var(--band, 50%) + 9%);
   }
 }
 
@@ -293,14 +329,33 @@
   }
 }
 
-/* Footer route divider — dashes drift along the arc from hub to hub */
+/* Footer route divider - dashes drift along the arc from hub to hub */
 @keyframes route-flow {
   to {
     stroke-dashoffset: -48;
   }
 }
 
-/* Footer night sky — stars breathe rather than blink */
+/* Footer route divider - the plane badge flies hub -> hub along the arc.
+   left/top are percentages of the same box the route <svg> fills (viewBox
+   1200x96, preserveAspectRatio="none"), so the badge tracks the drawn curve
+   exactly at every width. Bank angles are eased a touch past the true
+   tangent so the turn still reads on narrow screens. */
+@keyframes footer-route-fly {
+  0%   { left: 0.50%; top: 95.8%; opacity: 0; transform: translate(-50%, -50%) rotate(-21deg); }
+  10%  { left: 9.28%; top: 68.8%; opacity: 1; transform: translate(-50%, -50%) rotate(-15deg); }
+  20%  { left: 18.81%; top: 47.8%; opacity: 1; transform: translate(-50%, -50%) rotate(-11deg); }
+  30%  { left: 28.90%; top: 32.8%; opacity: 1; transform: translate(-50%, -50%) rotate(-7deg); }
+  40%  { left: 39.36%; top: 23.8%; opacity: 1; transform: translate(-50%, -50%) rotate(-3.4deg); }
+  50%  { left: 50.00%; top: 20.8%; opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+  60%  { left: 60.64%; top: 23.8%; opacity: 1; transform: translate(-50%, -50%) rotate(3.4deg); }
+  70%  { left: 71.10%; top: 32.8%; opacity: 1; transform: translate(-50%, -50%) rotate(7deg); }
+  80%  { left: 81.19%; top: 47.8%; opacity: 1; transform: translate(-50%, -50%) rotate(11deg); }
+  90%  { left: 90.72%; top: 68.8%; opacity: 1; transform: translate(-50%, -50%) rotate(15deg); }
+  100% { left: 99.50%; top: 95.8%; opacity: 0; transform: translate(-50%, -50%) rotate(21deg); }
+}
+
+/* Footer night sky - stars breathe rather than blink */
 @keyframes star-breathe {
   0%,
   100% {

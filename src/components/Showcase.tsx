@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { showcase } from "../data";
 import { Arrow, Check, Pin, Star } from "../icons";
 
-// Drifting blossom petals — deterministic configs (no hydration surprises).
+// Drifting blossom petals - deterministic configs (no hydration surprises).
 const PETALS = Array.from({ length: 18 }, (_, i) => {
   const fg = i >= 15; // last three drift in the foreground, softly blurred
   return {
@@ -108,7 +108,7 @@ export default function Showcase() {
           <div className="pointer-events-none absolute -left-16 top-8 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(58,106,74,0.28),transparent_70%)] blur-2xl" />
           <div className="pointer-events-none absolute -right-10 bottom-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(122,92,62,0.22),transparent_70%)] blur-2xl" />
 
-          {/* drifting petals — behind the phone */}
+          {/* drifting petals - behind the phone */}
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             {PETALS.filter((p) => !p.fg).map((p, i) => (
               <span key={i} className="absolute top-0 block" style={petalStyle(p)} />
@@ -116,7 +116,7 @@ export default function Showcase() {
           </div>
 
           {/* ---------- floating glass feature cards ---------- */}
-          {/* city pill — top */}
+          {/* city pill - top */}
           <div
             className="absolute left-1/2 top-6 z-20 hidden items-center gap-2 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold text-ink shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:flex"
             style={{ transform: "translate3d(calc(-50% + var(--mx,0) * 16px), calc(var(--my,0) * 8px), 0)" }}
@@ -125,7 +125,7 @@ export default function Showcase() {
             Kyoto · Osaka · Nara
           </div>
 
-          {/* visa speed — upper left */}
+          {/* visa speed - upper left */}
           <div
             className="absolute left-4 top-16 z-20 flex items-center gap-3 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:left-10 sm:top-24"
             style={par(28, 22)}
@@ -139,7 +139,7 @@ export default function Showcase() {
             </div>
           </div>
 
-          {/* remote — right */}
+          {/* remote - right */}
           <div
             className="absolute right-4 top-28 z-20 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:right-12 sm:top-40"
             style={par(-24, 18)}
@@ -148,7 +148,7 @@ export default function Showcase() {
             <p className="text-[0.7rem] text-ink/60">No embassy visits</p>
           </div>
 
-          {/* rating — lower left */}
+          {/* rating - lower left */}
           <div
             className="absolute bottom-14 left-4 z-20 flex items-center gap-3 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:bottom-20 sm:left-14"
             style={par(22, -18)}
@@ -240,7 +240,7 @@ export default function Showcase() {
               </div>
             </div>
           </div>
-          {/* foreground petals — drifting in front for depth */}
+          {/* foreground petals - drifting in front for depth */}
           <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden">
             {PETALS.filter((p) => p.fg).map((p, i) => (
               <span key={i} className="absolute top-0 block" style={petalStyle(p)} />

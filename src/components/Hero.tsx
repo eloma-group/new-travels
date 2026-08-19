@@ -28,7 +28,7 @@ export default function Hero() {
 
   return (
     <section id="home">
-      {/* full-bleed cinematic frame — edge to edge, no gaps */}
+      {/* full-bleed cinematic frame - edge to edge, no gaps */}
       <div className="relative min-h-dvh overflow-hidden">
         {/* crossfading background layers */}
         {experiences.map((e, i) => (

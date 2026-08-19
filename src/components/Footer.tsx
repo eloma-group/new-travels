@@ -3,11 +3,11 @@ import { Arrow, Mail, Phone, Pin } from "../icons";
 import { brand, footer } from "../data";
 
 /* ------------------------------------------------------------------
-   Brand glyphs — kept local; `icons.tsx` holds the site's stroke set.
+   Brand glyphs - kept local; `icons.tsx` holds the site's stroke set.
    ------------------------------------------------------------------ */
 type G = { className?: string };
 
-/* Solid silhouette — the site's stroke Plane loses its shape at badge size. */
+/* Solid silhouette - the site's stroke Plane loses its shape at badge size. */
 const PlaneMark = ({ className }: G) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M21.5 15.6v-1.9l-8.2-5.1V3.1a1.4 1.4 0 0 0-2.8 0v5.5l-8.2 5.1v1.9l8.2-2.6v5.3l-2.3 1.7v1.4l3.7-1 3.7 1v-1.4l-2.3-1.7V13l8.2 2.6Z" />
@@ -63,7 +63,7 @@ const Threads = ({ className }: G) => (
   </svg>
 );
 
-/* Real brand colours — the group's footers use them across every site. */
+/* Real brand colours - the group's footers use them across every site. */
 const socials = [
   { Icon: LinkedIn, label: "LinkedIn", href: "#", bg: "#0A66C2" },
   { Icon: TwitterX, label: "X", href: "#", bg: "#000000" },
@@ -78,7 +78,7 @@ const socials = [
   { Icon: Threads, label: "Threads", href: "#", bg: "#000000" },
 ];
 
-/* Deterministic star field — no hydration surprises, no random reflow. */
+/* Deterministic star field - no hydration surprises, no random reflow. */
 const STARS = Array.from({ length: 34 }, (_, i) => ({
   left: (i * 13.7 + (i % 5) * 3.1) % 100,
   top: (i * 7.3 + (i % 3) * 11) % 62,
@@ -198,12 +198,21 @@ export default function Footer() {
     >
       {/* ---------- horizon: the cream page curves down into the night ---------- */}
       <svg
-        className="absolute inset-x-0 top-0 h-[54px] w-full text-cream sm:h-[92px]"
+        className="absolute inset-x-0 top-0 z-10 h-[54px] w-full sm:h-[92px]"
         viewBox="0 0 1440 92"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        <path d="M0 0h1440v14C1144 66 900 92 720 92S296 66 0 14V0Z" fill="currentColor" />
+        {/* starts on the exact page cream so the seam with the section above vanishes,
+            then warms as it sinks toward the curve */}
+        <defs>
+          <linearGradient id="footerHorizon" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f8f5ef" />
+            <stop offset="55%" stopColor="#f5f1e8" />
+            <stop offset="100%" stopColor="#efe7da" />
+          </linearGradient>
+        </defs>
+        <path d="M0 0h1440v14C1144 66 900 92 720 92S296 66 0 14V0Z" fill="url(#footerHorizon)" />
       </svg>
 
       {/* ---------- ambient warmth + star field ---------- */}
@@ -279,7 +288,7 @@ export default function Footer() {
                 role={joined ? "status" : undefined}
               >
                 {joined
-                  ? "You're on the list — we'll write when the season turns."
+                  ? "You're on the list - we'll write when the season turns."
                   : footer.ctaNote}
               </p>
             </form>
@@ -314,15 +323,24 @@ export default function Footer() {
               className="absolute bottom-0 right-0 h-2 w-2 translate-x-1/2 translate-y-1/2 rounded-full bg-brown-soft"
               aria-hidden="true"
             />
+            {/* the plane rides the arc hub -> hub; base position is the apex so
+                reduced-motion leaves it resting at the top of the route */}
             <span
-              className="absolute left-1/2 top-0 grid h-11 w-11 -translate-x-1/2 place-items-center rounded-full brass text-cream sm:h-12 sm:w-12"
+              className="absolute left-1/2 top-[20.8%] grid h-11 w-11 place-items-center rounded-full brass text-cream will-change-[left,top,transform] sm:h-12 sm:w-12"
+              style={{
+                // centring lives only in the keyframe transform - Tailwind v4's
+                // -translate-* utilities set the independent `translate` property,
+                // which would compose on top and lift the badge off the route
+                transform: "translate(-50%, -50%)",
+                animation: "footer-route-fly 11s linear infinite",
+              }}
               aria-hidden="true"
             >
               <PlaneMark className="h-[18px] w-[18px] rotate-90" />
             </span>
           </div>
 
-          <div className="mt-4 flex items-start justify-between gap-4">
+          <div className="mt-7 flex items-start justify-between gap-4">
             <HubClock {...footer.hubs[0]} now={now} align="start" />
             <HubClock {...footer.hubs[1]} now={now} align="end" />
           </div>
@@ -417,6 +435,9 @@ export default function Footer() {
                   <li key={item.label}>
                     <a
                       href={item.href}
+                      {...(item.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
                       className="inline-block text-[0.83rem] text-cream/45 transition-all duration-200 hover:translate-x-1 hover:text-cream"
                     >
                       {item.label}
@@ -428,8 +449,32 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* ================= protected by - EG Digital shield ================= */}
+        <div className="mt-14 flex items-end justify-center sm:justify-end">
+          <span className="pb-4 -mr-3.5 text-[0.69rem] font-bold uppercase tracking-[0.14em] text-cream/40">
+            Protected by
+          </span>
+          <a
+            href="https://egdigital.com.au/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="EG Digital"
+            className="block leading-none opacity-90 transition-all duration-300 ease-lux hover:scale-105 hover:opacity-100"
+          >
+            <img
+              src="/images/eg-digital-shield.gif"
+              alt="EG Digital"
+              loading="lazy"
+              decoding="async"
+              width={92}
+              height={92}
+              className="block h-[92px] w-auto"
+            />
+          </a>
+        </div>
+
         {/* ================= divider with the group's centre dot ================= */}
-        <div className="relative mt-16 h-px bg-white/10">
+        <div className="relative mt-4 h-px bg-white/10">
           <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brown-soft shadow-[0_0_12px_rgba(160,125,84,0.7)]" />
         </div>
 

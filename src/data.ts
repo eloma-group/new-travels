@@ -1,4 +1,4 @@
-// Premium travel photography (Unsplash — free, hotlinked at production sizes).
+// Premium travel photography (Unsplash - free, hotlinked at production sizes).
 const u = (id: string, w: number, q = 78) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=${q}`;
 
@@ -39,7 +39,7 @@ const build = (id: string, rest: Omit<Experience, "hero" | "thumb" | "key">): Ex
   ...rest,
 });
 
-// "Pure Adventure" gallery — 6 staggered slots whose images auto-rotate.
+// "Pure Adventure" gallery- 6 staggered slots whose images auto-rotate.
 const p = (id: string) => u(id, 640, 72);
 
 export type Slot = { h: "sm" | "md" | "lg"; offset: number; featured: boolean };
@@ -128,12 +128,12 @@ export const momentSets: MomentSet[] = [
   },
 ];
 
-// "Amazing Destination" showcase — a 3D-tilt hero band with floating cards.
+// "Amazing Destination" showcase - a 3D-tilt hero band with floating cards.
 export const destination = {
   eyebrow: "Amazing",
   title: "Destination",
   copy: "Wander further than the map lets you dream. Hand-crafted journeys, local guides who feel like friends and moments that stay with you long after you're home.",
-  // Two travellers on an adventure together — mirrors the reference frame.
+  // Two travellers on an adventure together - mirrors the reference frame.
   hero: u("photo-1539635278303-d4002c07eae3", 1100, 82),
   // Floating 3D card imagery.
   cards: [
@@ -153,14 +153,14 @@ export const destination = {
   ],
 } as const;
 
-// "The Wander Index" — centered editorial band: three arched portals into real
+// "The Wander Index" - centered editorial band: three arched portals into real
 // places, each tagged with true coordinates, threaded by a flight route.
 export const wander = {
   script: "hand-picked",
   eyebrow: "Curated escapes",
-  // editorial headline — middle word carries the brown gradient accent
+  // editorial headline - middle word carries the brown gradient accent
   heading: ["Places that", "rearrange", "you, a little."],
-  copy: "No rushed checklists. A short list of destinations we keep returning to — with local guides who feel like old friends and rooms that earn the journey there.",
+  copy: "No rushed checklists. A short list of destinations we keep returning to - with local guides who feel like old friends and rooms that earn the journey there.",
   plates: [
     {
       key: "jaipur",
@@ -205,7 +205,7 @@ export const wander = {
   ],
 } as const;
 
-// Bottom "app showcase" — a 3D phone mockup standing on a ledge against a
+// Bottom "app showcase" - a 3D phone mockup standing on a ledge against a
 // rugged Australian coastline scene.
 export const showcase = {
   bg: u("photo-1624138784614-87fd1b6528f8", 2200, 80), // Sydney Opera House & Harbour Bridge
@@ -214,11 +214,11 @@ export const showcase = {
   eyebrow: "The EG Travel app",
   heading: "Your whole India & Australia trip, handled from your pocket.",
   headingAccent: "India & Australia",
-  sub: "Visas, itineraries and local guides — sorted before you land and tracked from one calm, simple app.",
+  sub: "Visas, itineraries and local guides - sorted before you land and tracked from one calm, simple app.",
   // phone-screen mock
   brand: "EG TRAVEL",
   appHeadline: "Visas for India & Australia, made simple",
-  appSub: "Complete visa support — 100% remote",
+  appSub: "Complete visa support- 100% remote",
   cta: "Get visa assistance",
   priceNote: "From",
   price: "$135",
@@ -227,13 +227,13 @@ export const showcase = {
   ticker: ["Jaipur", "Agra", "Sydney", "Goa", "Uluru", "Kerala"],
 } as const;
 
-// "Postcards" — a scattered print-wall collage: polaroids, a clipping, a
+// "Postcards" - a scattered print-wall collage: polaroids, a clipping, a
 // boarding pass and a stamp pinned around a centred editorial core.
 export const postcards = {
   chip: "Field notes",
   script: "postcards from",
   heading: ["the long", "way round"],
-  copy: "Frames our travellers brought home — a palace gate at first light, a backwater at dusk, the reef from the edge of the boat. No stock, no filters. Just the long way round.",
+  copy: "Frames our travellers brought home - a palace gate at first light, a backwater at dusk, the reef from the edge of the boat. No stock, no filters. Just the long way round.",
   cta: "Open the journal",
   meta: "42 stories · new one most weeks",
   watermark: "wander",
@@ -285,22 +285,25 @@ export const postcards = {
 } as const;
 
 // ============================================================
-// Footer — company details, link columns, hubs and socials.
-// NOTE: `abn` and the social profile URLs are placeholders — drop the real
+// Footer - company details, link columns, hubs and socials.
+// NOTE: `abn` and the social profile URLs are placeholders - drop the real
 // EG Travel values in here and the footer picks them up (an empty `abn`
 // simply hides its chip).
 // ============================================================
 const ADDRESS = "71 Gipps Street, Collingwood, Melbourne, VIC 3066, Australia";
 
+type FooterLink = { label: string; href: string; external?: boolean };
+type FooterColumn = { heading: string; links: FooterLink[] };
+
 export const footer = {
   tagline:
-    "Hand-crafted journeys through India and Australia — visas, itineraries and local guides, handled end to end.",
+    "Hand-crafted journeys through India and Australia - visas, itineraries and local guides, handled end to end.",
 
   // CTA band
   script: "wherever next",
   ctaHeading: ["Tell us where you", "want to wake up."],
   ctaCopy:
-    "One note from you and a real person — not a form — plans the rest. Join the list for quiet drops of new routes and seasonal windows.",
+    "One note from you and a real person - not a form - plans the rest. Join the list for quiet drops of new routes and seasonal windows.",
   ctaPlaceholder: "you@example.com",
   ctaNote: "No spam. Two or three notes a year, only when something is worth the trip.",
 
@@ -321,14 +324,12 @@ export const footer = {
 
   columns: [
     {
-      heading: "Destinations",
+      heading: "Businesses",
       links: [
-        { label: "Jaipur", href: "#journeys" },
-        { label: "Kerala", href: "#journeys" },
-        { label: "Agra", href: "#journeys" },
-        { label: "Sydney", href: "#journeys" },
-        { label: "Gold Coast", href: "#journeys" },
-        { label: "All destinations", href: "#journeys" },
+        { label: "Bivry", href: "https://bivry.com.au", external: true },
+        { label: "EG Digital", href: "https://egdigital.com.au", external: true },
+        { label: "Eloma Group", href: "https://elomagroup.com.au", external: true },
+        { label: "Call Center", href: "#contact" },
       ],
     },
     {
@@ -364,7 +365,7 @@ export const footer = {
         { label: "Cancellation policy", href: "#" },
       ],
     },
-  ],
+  ] as FooterColumn[],
 
   legal: [
     { label: "Privacy Policy", href: "#" },
@@ -410,3 +411,42 @@ export const experiences: Experience[] = [
     copy: "White marble turning amber at sunrise, with private early access before the crowds arrive.",
   }),
 ];
+
+// ---------------------------------------------------------------------------
+// "The invitation" - oversized wordmark with a landscape showing through the
+// letters and a cut-out traveller standing in front of it.
+// ---------------------------------------------------------------------------
+export const invite = {
+  script: "the invitation",
+  eyebrow: "Est. 2011 · 40+ countries",
+  words: ["EG", "Travel"],
+  tagline: "Travel & Adventure",
+  copy: "Every journey we design begins the same way - someone standing at the edge of an ordinary week, deciding to go.",
+  cta: "Start your journey",
+  // the two plates that flank the wordmark
+  plates: [
+    {
+      key: "udaipur",
+      img: u("photo-1695956353120-54ce5e91632b", 620, 82),
+      name: "Udaipur",
+      coord: "24.5°N · 73.6°E",
+    },
+    {
+      key: "uluru",
+      img: u("photo-1774257784483-f3fc96d42730", 620, 82),
+      name: "Uluru",
+      coord: "25.3°S · 131.0°E",
+    },
+  ],
+  // the route book that closes the section
+  indexTitle: "The route book",
+  index: [
+    { n: "01", name: "Udaipur", coord: "24.5°N · 73.6°E", note: "Lake palaces" },
+    { n: "02", name: "Ladakh", coord: "34.1°N · 77.5°E", note: "High passes" },
+    { n: "03", name: "Uluru", coord: "25.3°S · 131.0°E", note: "Red centre" },
+    { n: "04", name: "Kyoto", coord: "35.0°N · 135.7°E", note: "Old lanes" },
+  ],
+  // warm ridgeline that reads well inside the letterforms
+  fill: u("photo-1520968869663-678928035aa1", 2200, 84),
+  traveller: "/images/traveller.png",
+};
