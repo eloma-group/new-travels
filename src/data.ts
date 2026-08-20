@@ -9,7 +9,7 @@ export const nav = [
   { label: "Packages", href: "#packages" },
   { label: "Gallery", href: "#gallery" },
   { label: "Journeys", href: "#journeys" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 // Avatars for the "people joined" cluster.
@@ -154,7 +154,7 @@ export const destination = {
 } as const;
 
 // "The Wander Index" - centered editorial band: three arched portals into real
-// places, each tagged with true coordinates, threaded by a flight route.
+// places, each with a short signature line, threaded by a flight route.
 export const wander = {
   script: "hand-picked",
   eyebrow: "Curated escapes",
@@ -166,35 +166,35 @@ export const wander = {
       key: "jaipur",
       name: "Jaipur",
       region: "India",
-      coord: "26.9°N · 75.8°E",
+      tag: "Pink City",
       img: u("photo-1477587458883-47145ed94245", 640, 78),
     },
     {
       key: "kerala",
       name: "Kerala",
       region: "India",
-      coord: "9.5°N · 76.3°E",
+      tag: "Backwaters",
       img: u("photo-1602216056096-3b40cc0c9944", 760, 80),
     },
     {
       key: "agra",
       name: "Agra",
       region: "India",
-      coord: "27.2°N · 78.0°E",
+      tag: "Taj at dawn",
       img: u("photo-1548013146-72479768bada", 980, 82),
     },
     {
       key: "sydney",
       name: "Sydney",
       region: "Australia",
-      coord: "33.9°S · 151.2°E",
+      tag: "Harbour city",
       img: u("photo-1540202404-a2f29016b523", 760, 80),
     },
     {
       key: "gold-coast",
       name: "Gold Coast",
       region: "Australia",
-      coord: "28.0°S · 153.4°E",
+      tag: "Surf coast",
       img: u("photo-1506372023823-741c83b836fe", 640, 78),
     },
   ],
@@ -291,6 +291,7 @@ export const postcards = {
 // simply hides its chip).
 // ============================================================
 const ADDRESS = "71 Gipps Street, Collingwood, Melbourne, VIC 3066, Australia";
+const MAPS = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 
 type FooterLink = { label: string; href: string; external?: boolean };
 type FooterColumn = { heading: string; links: FooterLink[] };
@@ -311,10 +312,11 @@ export const footer = {
   email: { label: "connect@egtravel.com.au", href: "mailto:connect@egtravel.com.au" },
   address: {
     lines: ["71 Gipps Street, Collingwood,", "Melbourne, VIC 3066, Australia"],
-    maps: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`,
+    maps: MAPS,
   },
   abn: "", // e.g. "12 693 138 733"
-  company: "EG Travel Australia Pty Ltd (Unit of Eloma Group)",
+  company: "EG Travel Australia Pty Ltd",
+  companyUnit: "(Unit of Eloma Group)",
 
   // Live local time at either end of the route we fly most.
   hubs: [
@@ -329,7 +331,7 @@ export const footer = {
         { label: "Bivry", href: "https://bivry.com.au", external: true },
         { label: "EG Digital", href: "https://egdigital.com.au", external: true },
         { label: "Eloma Group", href: "https://elomagroup.com.au", external: true },
-        { label: "Call Center", href: "#contact" },
+        { label: "Contact us", href: "/contact" },
       ],
     },
     {
@@ -351,7 +353,7 @@ export const footer = {
         { label: "Careers", href: "#" },
         { label: "Blog", href: "#" },
         { label: "Media", href: "#" },
-        { label: "Contact", href: "#contact" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
@@ -429,13 +431,13 @@ export const invite = {
       key: "udaipur",
       img: u("photo-1695956353120-54ce5e91632b", 620, 82),
       name: "Udaipur",
-      coord: "24.5°N · 73.6°E",
+      tag: "Lake palaces",
     },
     {
       key: "uluru",
       img: u("photo-1774257784483-f3fc96d42730", 620, 82),
       name: "Uluru",
-      coord: "25.3°S · 131.0°E",
+      tag: "Red centre",
     },
   ],
   // the route book that closes the section
@@ -450,3 +452,373 @@ export const invite = {
   fill: u("photo-1520968869663-678928035aa1", 2200, 84),
   traveller: "/images/traveller.png",
 };
+
+// ============================================================
+// Contact page - "the desk". The copy is written as
+// correspondence on purpose: the enquiry is a sentence you
+// finish rather than a form you fill.
+// NOTE: the FAQ answers and the office hours below are drafts -
+// confirm them with the travel desk before this goes live.
+// ============================================================
+/* Offices we only hold a written address for open through a Maps search. */
+const gmaps = (q: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+export const contactPage = {
+  eyebrow: "Contact",
+  script: "one note, that's all",
+  heading: ["Start with", "a sentence."],
+  copy: "No booking engine, no queue number. Finish the note below and it lands with a planner who has actually walked the route.",
+
+  // ---- the full-bleed mosaic that sits under the masthead ----
+  // Six tiles laid edge to edge. Nothing slides: each tile turns over in its
+  // own place, so the band keeps changing without the page ever moving.
+  // `size` maps to a grid span in Contact.tsx; `axis` picks the turn axis.
+  mosaic: [
+    {
+      key: "rajasthan",
+      size: "sm",
+      axis: "y",
+      faces: [
+        {
+          img: u("photo-1599661046289-e31897846e41", 900, 78),
+          title: "Pink City",
+          kicker: "Explore the beauty",
+          alt: "The pink facade of Hawa Mahal in Jaipur",
+        },
+        {
+          img: u("photo-1587135941948-670b381f08ce", 900, 78),
+          title: "Taj Mahal",
+          kicker: "Just beautiful",
+          alt: "The Taj Mahal at golden hour",
+        },
+      ],
+    },
+    {
+      key: "kerala",
+      size: "sm",
+      axis: "x",
+      faces: [
+        {
+          img: u("photo-1609920658906-8223bd289001", 900, 78),
+          title: "Kerala Backwaters",
+          kicker: "Go slowly",
+          alt: "A houseboat drifting through Kerala's backwaters",
+        },
+        {
+          img: u("photo-1512343879784-a960bf40e7f2", 900, 78),
+          title: "Goa Sands",
+          kicker: "Explore the beauty",
+          alt: "Palm-lined sands of a Goa beach",
+        },
+      ],
+    },
+    {
+      key: "ladakh",
+      size: "tall",
+      axis: "y",
+      faces: [
+        {
+          img: u("photo-1626621341517-bbf3d9990a23", 1100, 80),
+          title: "Ladakh",
+          kicker: "High and quiet",
+          alt: "Monasteries above the high desert of Ladakh",
+        },
+        {
+          img: u("photo-1552465011-b4e21bf6e79a", 1100, 80),
+          title: "Blue Mountains",
+          kicker: "Just beautiful",
+          alt: "Eucalyptus valleys of the Blue Mountains",
+        },
+      ],
+    },
+    {
+      key: "sydney",
+      size: "sm",
+      axis: "x",
+      faces: [
+        {
+          img: u("photo-1506973035872-a4ec16b8e8d9", 900, 78),
+          title: "Sydney",
+          kicker: "Just beautiful",
+          alt: "Sydney Opera House by the harbour",
+        },
+        {
+          img: u("photo-1523482580672-f109ba8cb9be", 900, 78),
+          title: "Harbour at Dusk",
+          kicker: "Stay out late",
+          alt: "Sydney Harbour Bridge at dusk",
+        },
+      ],
+    },
+    {
+      key: "whitsundays",
+      size: "sm",
+      axis: "y",
+      faces: [
+        {
+          img: u("photo-1523731407965-2430cd12f5e4", 900, 78),
+          title: "Whitehaven",
+          kicker: "Explore the beauty",
+          alt: "White sand swirls of Whitehaven Beach",
+        },
+        {
+          img: u("photo-1582672060674-bc2bd808a8b5", 900, 78),
+          title: "The Great Reef",
+          kicker: "Look under",
+          alt: "Turquoise coral of the Great Barrier Reef",
+        },
+      ],
+    },
+    {
+      key: "red-centre",
+      size: "wide",
+      axis: "x",
+      faces: [
+        {
+          img: u("photo-1529108190281-9a4f620bc2d8", 1800, 80),
+          title: "Uluru",
+          kicker: "Just beautiful",
+          alt: "Uluru glowing red at sunset",
+        },
+        {
+          img: u("photo-1494233892892-84542a694e72", 1800, 80),
+          title: "The Coast Road",
+          kicker: "Take the long way",
+          alt: "The Sea Cliff Bridge along the New South Wales coast",
+        },
+        {
+          img: u("photo-1514395462725-fb4566210144", 1800, 80),
+          title: "Melbourne",
+          kicker: "Where we sit",
+          alt: "Melbourne's skyline along the river",
+        },
+      ],
+    },
+  ],
+
+  // The hero shows what an answer looks like instead of promising one.
+  exchange: [
+    {
+      who: "The traveller",
+      line: "Somewhere green. Two weeks in March. We don't want to be rushed.",
+    },
+    {
+      who: brand,
+      line: "Kerala, then - the second week, before the heat comes up. We know a boat, and the man who cooks on it.",
+    },
+  ],
+  exchangeNote: "How the first note back usually reads",
+
+  // ---- every desk we keep ----
+  // `lat`/`lon` come straight off each Maps pin; they only drive the distance
+  // and bearing readout on the chart, so building-level accuracy is plenty.
+  // Ordered west to east by clock inside each group, so the two lists read the
+  // way the working day actually travels around them.
+  // `opens`/`closes` are local 24h and drive both the live open/closed state
+  // and the day rule drawn under each office.
+  // NOTE: 9-18 local is assumed everywhere except Melbourne and Gurugram -
+  // confirm the real hours with each desk before this goes live.
+  offices: [
+    // --- Australia ---
+    {
+      key: "perth",
+      lat: -31.9515,
+      lon: 115.8573,
+      city: "Perth",
+      region: "Western Australia",
+      group: "Australia",
+      tz: "Australia/Perth",
+      opens: 9,
+      closes: 18,
+      lines: ["The Wentworth Building, Level 2", "300 Murray St, Perth WA 6000"],
+      maps: "https://maps.app.goo.gl/4GbRF1oKBHYGiNbc7",
+    },
+    {
+      key: "adelaide",
+      lat: -34.9423,
+      lon: 138.5837,
+      city: "Adelaide",
+      region: "South Australia",
+      group: "Australia",
+      tz: "Australia/Adelaide",
+      opens: 9,
+      closes: 18,
+      lines: ["2 Greenhill Road", "Wayville SA 5034"],
+      maps: "https://maps.app.goo.gl/HnuDAVg7dYgJk1dF6",
+    },
+    {
+      key: "brisbane",
+      lat: -27.4683,
+      lon: 153.0303,
+      city: "Brisbane",
+      region: "Queensland",
+      group: "Australia",
+      tz: "Australia/Brisbane",
+      opens: 9,
+      closes: 18,
+      lines: ["71 Eagle Street", "Brisbane City QLD 4000"],
+      maps: "https://maps.app.goo.gl/KZ8b3NLKEt2yr6W78",
+    },
+    {
+      key: "melbourne",
+      lat: -37.8049,
+      lon: 144.9899,
+      city: "Melbourne",
+      region: "Victoria",
+      group: "Australia",
+      tz: "Australia/Melbourne",
+      opens: 9,
+      closes: 18,
+      tag: "Head office",
+      lines: ["71 Gipps Street, Collingwood", "Melbourne VIC 3066"],
+      maps: "https://maps.app.goo.gl/Yxa7MEn8AzoconF86",
+    },
+    {
+      key: "sydney",
+      lat: -33.8676,
+      lon: 151.2118,
+      city: "Sydney",
+      region: "New South Wales",
+      group: "Australia",
+      tz: "Australia/Sydney",
+      opens: 9,
+      closes: 18,
+      lines: ["60 Martin Place", "Sydney NSW 2000"],
+      maps: "https://maps.app.goo.gl/ZyWuqs54hJxdBdAs7",
+    },
+
+    // --- everywhere else ---
+    {
+      key: "toronto",
+      lat: 43.6487,
+      lon: -79.3817,
+      city: "Toronto",
+      region: "Canada",
+      group: "International",
+      tz: "America/Toronto",
+      opens: 9,
+      closes: 18,
+      lines: ["First Canadian Place", "100 King St W #5600, Toronto ON M5X 1C9"],
+      maps: gmaps("First Canadian Place, 100 King St W #5600, Toronto, ON M5X 1C9, Canada"),
+    },
+    {
+      key: "washington",
+      lat: 38.8972,
+      lon: -77.01,
+      city: "Washington",
+      region: "United States",
+      group: "International",
+      tz: "America/New_York",
+      opens: 9,
+      closes: 18,
+      lines: ["20 F Street NW", "Washington, DC 20001"],
+      maps: "https://maps.app.goo.gl/emZJUVKQH3966yJHA",
+    },
+    {
+      key: "london",
+      lat: 51.5144,
+      lon: -0.1049,
+      city: "London",
+      region: "United Kingdom",
+      group: "International",
+      tz: "Europe/London",
+      opens: 9,
+      closes: 18,
+      lines: ["107-111 Fleet Street", "London EC4A 2AB"],
+      maps: "https://maps.app.goo.gl/FWNZRfZQjN9twUBKA",
+    },
+    {
+      key: "dubai",
+      lat: 25.2001,
+      lon: 55.2752,
+      city: "Dubai",
+      region: "United Arab Emirates",
+      group: "International",
+      tz: "Asia/Dubai",
+      opens: 9,
+      closes: 18,
+      lines: ["Boulevard Plaza Tower 1, Level 9", "Downtown Dubai"],
+      maps: "https://maps.app.goo.gl/HDmawG4aAxADydT36",
+    },
+    {
+      key: "gurugram",
+      lat: 28.4211,
+      lon: 77.0469,
+      city: "Gurugram",
+      region: "India",
+      group: "International",
+      tz: "Asia/Kolkata",
+      opens: 10,
+      closes: 19,
+      lines: ["Tower A, Spaze iTech Park, 5th Floor", "Sohna - Gurgaon Rd, Gurugram 122018"],
+      maps: gmaps("Tower A, Spaze iTech Park, 5th Floor, Sohna - Gurgaon Rd, Gurugram 122018"),
+    },
+    {
+      key: "singapore",
+      lat: 1.2846,
+      lon: 103.851,
+      city: "Singapore",
+      region: "Singapore",
+      group: "International",
+      tz: "Asia/Singapore",
+      opens: 9,
+      closes: 18,
+      lines: ["One Raffles Place Tower 2, #19-20", "1 Raffles Place, Singapore 048616"],
+      maps: gmaps("1 Raffles Pl, #19-20 One Raffles Place Tower 2, Singapore 048616"),
+    },
+    {
+      key: "hong-kong",
+      lat: 22.28,
+      lon: 114.1737,
+      city: "Hong Kong",
+      region: "Hong Kong SAR",
+      group: "International",
+      tz: "Asia/Hong_Kong",
+      opens: 9,
+      closes: 18,
+      lines: ["18 Harbour Road, 35/F", "Wan Chai, Hong Kong Island"],
+      maps: "https://maps.app.goo.gl/cWmxdmQ6oHkgL9td8",
+    },
+  ],
+
+  steps: [
+    {
+      n: "01",
+      title: "A planner reads it",
+      body: "Not a bot and not a queue. The note goes to whoever knows that route best.",
+    },
+    {
+      n: "02",
+      title: "You hear back",
+      body: "A call or a written reply with real dates, honest options and what each one costs.",
+    },
+    {
+      n: "03",
+      title: "We hold the pieces",
+      body: "Flights, rooms, guides and visas are lined up before you pay for any of it.",
+    },
+  ],
+
+  faq: [
+    {
+      q: "How quickly will someone reply?",
+      a: "Same working day for notes that arrive before 4pm in Melbourne. Anything later is answered the next morning.",
+    },
+    {
+      q: "Do you charge to plan a trip?",
+      a: "No. Route options, itineraries and quotes cost nothing. You pay once you accept an itinerary, not before.",
+    },
+    {
+      q: "Can you handle visas?",
+      a: "Yes. Visa assistance starts at $135 per person, with discounts for groups of two or more.",
+    },
+    {
+      q: "Do you book flights on their own?",
+      a: "We do. Flights, airport transfers and travel insurance can all be booked without a full itinerary.",
+    },
+  ],
+
+  travellers: ["just me", "two of us", "a family", "a small group"],
+  nights: ["4-6", "7-10", "11-14", "two weeks +"],
+} as const;

@@ -295,13 +295,17 @@ export default function Destination() {
                       </div>
                       </div>
 
-                      {/* engraved brass coordinate nameplate */}
-                      <div className="brass relative z-10 mx-auto -mt-5 w-[86%] rounded-xl px-4 py-2 text-center text-cream transition-[transform,filter] duration-500 group-hover:-translate-y-1 group-hover:brightness-110">
-                        <span className="absolute left-2.5 top-1/2 h-1 w-1 -translate-y-1/2 rounded-full bg-black/25" />
-                        <span className="absolute right-2.5 top-1/2 h-1 w-1 -translate-y-1/2 rounded-full bg-black/25" />
-                        <p className="text-sm font-semibold leading-tight">{p.name}</p>
-                        <p className="mt-0.5 text-[0.6rem] uppercase tracking-[0.22em] text-cream/85">
-                          {p.coord}
+                      {/* cut-crystal nameplate */}
+                      <div className="crystal relative z-10 mx-auto -mt-5 w-[86%] overflow-hidden rounded-xl px-4 py-2 text-center transition-[transform,box-shadow] duration-500 group-hover:-translate-y-1 group-hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,1),inset_0_0_16px_0_rgba(255,255,255,0.8),0_16px_30px_-14px_rgba(58,44,24,0.55)]">
+                        {/* bevelled top facet - the specular line that sells the glass */}
+                        <span className="pointer-events-none absolute inset-x-3 top-px h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+                        {/* raked light sweeping across the facet on hover */}
+                        <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
+                        <p className="relative text-sm font-semibold leading-tight text-brown-deep [text-shadow:0_1px_0_rgba(255,255,255,0.9)]">
+                          {p.name}
+                        </p>
+                        <p className="relative mt-0.5 text-[0.6rem] font-medium uppercase tracking-[0.22em] text-ink/60">
+                          {p.tag}
                         </p>
                       </div>
                     </a>

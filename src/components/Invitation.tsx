@@ -154,9 +154,6 @@ export default function Invitation() {
           onMouseLeave={rest}
           className="group relative mt-8 sm:mt-10"
         >
-          {/* warm glow blooming behind the traveller */}
-          <span className="pointer-events-none absolute left-1/2 top-[52%] h-[44%] w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(184,123,47,0.4),transparent_70%)] opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100" />
-
           {/* ---------- flanking plates ---------- */}
           {invite.plates.map((pl, i) => {
             const left = i === 0;
@@ -188,10 +185,17 @@ export default function Invitation() {
                       <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.42),transparent_44%)]" />
                     </div>
                   </div>
-                  <div className="brass relative z-10 mx-auto -mt-3 w-[86%] rounded-lg px-2 py-1.5 text-center text-cream transition-transform duration-500 group-hover/plate:-translate-y-0.5">
-                    <p className="text-[0.72rem] font-semibold leading-tight">{pl.name}</p>
-                    <p className="mt-0.5 text-[0.52rem] uppercase tracking-[0.18em] text-cream/85">
-                      {pl.coord}
+                  {/* cut-crystal nameplate */}
+                  <div className="crystal relative z-10 mx-auto -mt-3 w-[86%] overflow-hidden rounded-lg px-2 py-1.5 text-center transition-transform duration-500 group-hover/plate:-translate-y-0.5">
+                    {/* bevelled top facet - the specular line that sells the glass */}
+                    <span className="pointer-events-none absolute inset-x-2 top-px h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+                    {/* raked light sweeping across the facet on hover */}
+                    <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover/plate:left-[125%] group-hover/plate:opacity-100" />
+                    <p className="relative text-[0.72rem] font-semibold leading-tight text-brown-deep [text-shadow:0_1px_0_rgba(255,255,255,0.9)]">
+                      {pl.name}
+                    </p>
+                    <p className="relative mt-0.5 text-[0.52rem] font-medium uppercase tracking-[0.18em] text-ink/60">
+                      {pl.tag}
                     </p>
                   </div>
                 </a>

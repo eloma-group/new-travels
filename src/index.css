@@ -12,7 +12,7 @@
   font-display: swap;
 }
 
-/* Heading typeface - used only for h1–h6 (weight/size/style unchanged) */
+/* Heading typeface - used only for h1-h6 (weight/size/style unchanged) */
 @font-face {
   font-family: "Eloma Sans Heading";
   src: url("/fonts/ElomaSansHeading.otf") format("opentype");
@@ -172,6 +172,30 @@
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
 }
 
+/* Cut-crystal nameplate - clear glass with a bright bevel and a faint prism tint
+   (Wander Index portals). Reads as polished glass, never a frosted haze. */
+@utility crystal {
+  background:
+    linear-gradient(
+      170deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.42) 34%,
+      rgba(255, 255, 255, 0.24) 62%,
+      rgba(255, 255, 255, 0.5) 100%
+    ),
+    radial-gradient(120% 160% at 12% 0%, rgba(196, 226, 255, 0.5), transparent 58%),
+    radial-gradient(120% 160% at 92% 100%, rgba(255, 226, 196, 0.5), transparent 58%);
+  backdrop-filter: blur(6px) saturate(190%) brightness(1.08);
+  -webkit-backdrop-filter: blur(6px) saturate(190%) brightness(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.55),
+    inset 0 0 12px 0 rgba(255, 255, 255, 0.6),
+    0 10px 24px -12px rgba(58, 44, 24, 0.5),
+    0 1px 2px 0 rgba(58, 44, 24, 0.18);
+}
+
 /* Engraved brass nameplate - warm metal with a thin top highlight (Wander Index) */
 @utility brass {
   background: linear-gradient(180deg, #a07d54 0%, #7a5c3e 46%, #5b4632 100%);
@@ -191,19 +215,19 @@
   display: none;
 }
 
-/* Centered fluid container */
+/* Centered fluid container.
+
+   Two limits, whichever bites first: the gutter (which grows with the viewport
+   up to 7rem a side) and the column itself, which holds at 1360px until 80vw
+   overtakes it - from roughly 1700px up the column keeps growing with the
+   screen instead of stranding the page in the middle of it.
+
+   The old breakpoints raised `max-width` above the already-computed `width`,
+   which does nothing: that is why every screen past ~1400px kept the same
+   1360px column and the page looked small on a big monitor. */
 @utility shell {
-  width: min(100% - 2 * clamp(1.25rem, 4vw, 4.5rem), 1360px);
+  width: min(100% - 2 * clamp(1.25rem, 4vw, 7rem), max(1360px, 80vw));
   margin-inline: auto;
-  @media (min-width: 1920px) {
-    max-width: 1560px;
-  }
-  @media (min-width: 2560px) {
-    max-width: 1840px;
-  }
-  @media (min-width: 3200px) {
-    max-width: 2200px;
-  }
 }
 
 /* Premium one-by-one gallery reveal: unveils downward while rising + focusing */
@@ -363,6 +387,44 @@
   }
   50% {
     opacity: 0.75;
+  }
+}
+
+/* Contact mosaic - a tile turning over in its own place. It swings away from
+   the viewer as it turns, so the flip reads as a solid card moving through
+   space rather than a texture being swapped. --ax/--ay pick the axis per tile,
+   and the two names alternate so each turn carries on from where the last one
+   stopped (…0deg -> 180deg -> 360deg…).
+
+   The easing lives on the keyframes, not on the animation: the first half
+   accelerates, the second half decelerates, and both meet at full speed on the
+   midpoint. Put the easing on the animation instead and every keyframe gets it,
+   which stalls the card halfway through the turn. */
+@keyframes tile-turn-a {
+  0% {
+    transform: translateZ(0) scale(1) rotate3d(var(--ax, 0), var(--ay, 1), 0, 0deg);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.72, 0.46);
+  }
+  50% {
+    transform: translateZ(-72px) scale(0.965) rotate3d(var(--ax, 0), var(--ay, 1), 0, 90deg);
+    animation-timing-function: cubic-bezier(0.28, 0.54, 0.58, 1);
+  }
+  100% {
+    transform: translateZ(0) scale(1) rotate3d(var(--ax, 0), var(--ay, 1), 0, 180deg);
+  }
+}
+
+@keyframes tile-turn-b {
+  0% {
+    transform: translateZ(0) scale(1) rotate3d(var(--ax, 0), var(--ay, 1), 0, 180deg);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.72, 0.46);
+  }
+  50% {
+    transform: translateZ(-72px) scale(0.965) rotate3d(var(--ax, 0), var(--ay, 1), 0, 270deg);
+    animation-timing-function: cubic-bezier(0.28, 0.54, 0.58, 1);
+  }
+  100% {
+    transform: translateZ(0) scale(1) rotate3d(var(--ax, 0), var(--ay, 1), 0, 360deg);
   }
 }
 

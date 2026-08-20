@@ -1,21 +1,12 @@
-import Hero from "./components/Hero";
-import Destination from "./components/Destination";
-import Moments from "./components/Moments";
-import Invitation from "./components/Invitation";
-import Postcards from "./components/Postcards";
-import Showcase from "./components/Showcase";
-import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Contact from "./pages/Contact";
+import { useRoute } from "./router";
 
 export default function App() {
-  return (
-    <main className="min-h-dvh bg-cream">
-      <Hero />
-      <Destination />
-      <Moments />
-      <Invitation />
-      <Postcards />
-      <Showcase />
-      <Footer />
-    </main>
-  );
+  const route = useRoute();
+
+  // Trailing slashes and case shouldn't decide whether a page exists.
+  const path = route.replace(/\/+$/, "").toLowerCase() || "/";
+
+  return path === "/contact" ? <Contact /> : <Home />;
 }

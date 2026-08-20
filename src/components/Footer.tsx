@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Arrow, Mail, Phone, Pin } from "../icons";
 import { brand, footer } from "../data";
+import Link from "./Link";
 
 /* ------------------------------------------------------------------
    Brand glyphs - kept local; `icons.tsx` holds the site's stroke set.
@@ -405,7 +406,11 @@ export default function Footer() {
                 </Chip>
               )}
 
-              <Chip label="Co.">{footer.company}</Chip>
+              <Chip label="Co.">
+                {footer.company}
+                <br />
+                {footer.companyUnit}
+              </Chip>
             </div>
 
             {/* socials */}
@@ -431,19 +436,29 @@ export default function Footer() {
             <nav key={col.heading} aria-label={col.heading}>
               <ColumnHeading label={col.heading} />
               <ul className="flex flex-col gap-3">
-                {col.links.map((item) => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      {...(item.external
-                        ? { target: "_blank", rel: "noopener noreferrer" }
-                        : {})}
-                      className="inline-block text-[0.83rem] text-cream/45 transition-all duration-200 hover:translate-x-1 hover:text-cream"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
+                {col.links.map((item) => {
+                  const cls =
+                    "inline-block text-[0.83rem] text-cream/45 transition-all duration-200 hover:translate-x-1 hover:text-cream";
+                  return (
+                    <li key={item.label}>
+                      {item.href.startsWith("/") ? (
+                        <Link to={item.href} className={cls}>
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={item.href}
+                          {...(item.external
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                          className={cls}
+                        >
+                          {item.label}
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           ))}
@@ -481,7 +496,7 @@ export default function Footer() {
         {/* ================= bottom bar ================= */}
         <div className="relative flex flex-col items-center gap-4 pb-9 pt-6 text-center sm:flex-row sm:justify-between sm:text-left">
           <p className="text-xs text-cream/30">
-            © {now.getFullYear()} {footer.company.split(" (")[0]}. All rights reserved.
+            © {now.getFullYear()} {footer.company}. All rights reserved.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
