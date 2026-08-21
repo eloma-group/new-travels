@@ -45,12 +45,16 @@ const at = (z: number, yaw = 0) => ({
   ).toFixed(5)})`,
 });
 
+/* The yaw is deliberately small. A rotated layer is rasterised once and then
+   resampled by the rotation, so every extra degree costs sharpness on the
+   photograph and on the name under it. Six degrees still reads as a curved
+   deck; sixteen only read as soft. */
 const depth: React.CSSProperties[] = [
-  at(0, 16), //    far-left  - furthest, most yawed
-  at(30, 9), //    left      - yawed toward centre
+  at(0, 10), //    far-left  - furthest, most yawed
+  at(30, 5), //    left      - yawed toward centre
   at(74), //       centre    - pushed forward (feature)
-  at(30, -9), //   right     - yawed toward centre
-  at(0, -16), //   far-right - furthest, most yawed
+  at(30, -5), //   right     - yawed toward centre
+  at(0, -10), //   far-right - furthest, most yawed
 ];
 
 export default function Destination() {
@@ -142,7 +146,7 @@ export default function Destination() {
           viewBox="0 0 400 400"
           fill="none"
           className="absolute left-1/2 top-[54%] h-[44rem] w-[44rem] max-w-none -translate-x-1/2 -translate-y-1/2 text-brown"
-          style={{ opacity: 0.08 }}
+          style={{ opacity: 0.11 }}
         >
           <circle cx="200" cy="200" r="197" stroke="currentColor" strokeWidth="0.8" />
           <circle cx="200" cy="200" r="150" stroke="currentColor" strokeWidth="0.8" />
@@ -172,15 +176,11 @@ export default function Destination() {
         <div className="absolute -left-40 -top-16 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(122,92,62,0.10),transparent_68%)]" />
         <div className="absolute -right-36 -bottom-12 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(160,125,84,0.13),transparent_68%)]" />
 
-        {/* fine grain for tactile, printed-map depth */}
-        <div
-          className="absolute inset-0 opacity-[0.12] mix-blend-multiply"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")",
-            backgroundSize: "140px 140px",
-          }}
-        />
+        {/* A film grain used to sit here on `mix-blend-multiply`. Grain is
+            noise, and noise multiplied over every pixel of a band is exactly
+            what "matte" looks like - it took the light off the paper and put a
+            soft fuzz over the type sitting on it. The graticule and the corner
+            glows already give this ground its texture. */}
 
         {/* flight route + aeroplane - drawn in the compass rose's own 400x400 frame,
             so the dotted arc rides exactly on its outer ring (r=197 about 200,200) */}
@@ -262,7 +262,7 @@ export default function Destination() {
           className="mt-16 [perspective:1600px] sm:mt-20"
         >
           <div
-            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
+            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-3deg))_rotateY(calc(var(--mx,0)*5deg))] [transition:transform_.4s_ease-out] sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
           >
             {wander.plates.map((p, i) => {
               const feature = i === 2;
@@ -276,7 +276,7 @@ export default function Destination() {
                       className="group relative block transition-transform duration-500 ease-out hover:-translate-y-3 focus-visible:-translate-y-3"
                     >
                       {/* warm ground-glow that blooms under the portal on hover */}
-                      <span className="pointer-events-none absolute inset-x-6 bottom-1 -z-10 h-14 rounded-full bg-brown/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                      <span className="pointer-events-none absolute inset-x-2 -bottom-3 -z-10 h-20 rounded-full bg-[radial-gradient(closest-side,rgba(122,92,62,0.5),rgba(122,92,62,0.18)_58%,transparent_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                       {/* outer cabin wall panel - second frame */}
                       <div className="rounded-[46%/32%] bg-gradient-to-b from-[#f5eee1] via-[#e8dece] to-[#d5c8b3] p-[0.6rem] shadow-[0_44px_74px_-32px_rgba(58,44,24,0.55),inset_0_2px_2px_rgba(255,255,255,0.95),inset_0_-3px_7px_rgba(122,92,62,0.28)] ring-1 ring-brown/15 transition-shadow duration-500 ease-out group-hover:shadow-[0_58px_90px_-34px_rgba(58,44,24,0.66),inset_0_2px_2px_rgba(255,255,255,1),inset_0_-3px_7px_rgba(122,92,62,0.3)] group-hover:ring-brown/35 sm:p-3">
                       {/* airplane cabin window - moulded plastic bezel */}
@@ -290,27 +290,27 @@ export default function Destination() {
                         }`}
                       >
                         {/* recessed glass pane */}
-                        <div className="relative h-full w-full overflow-hidden rounded-[42%/28%] shadow-[inset_0_3px_12px_rgba(58,44,24,0.6)]">
+                        <div className="relative h-full w-full overflow-hidden rounded-[42%/28%] shadow-[inset_0_2px_4px_rgba(58,44,24,0.34)]">
                           <img
                             src={p.img}
                             alt={`${p.name}, ${p.region}`}
                             loading="lazy"
-                            className="h-full w-full object-cover transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.08] group-hover:brightness-[1.06] group-hover:saturate-[1.12]"
+                            className="h-full w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.08] group-hover:brightness-[1.12] group-hover:contrast-[1.08] group-hover:saturate-[1.22]"
                           />
-                          {/* cabin-dim - kept light so the view stays crisp */}
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                          {/* cabin-dim - only enough to seat the region pill */}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/26 via-transparent to-transparent" />
                           {/* raked glass highlight - a defined streak, not a haze */}
-                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.5)_0%,rgba(255,255,255,0.14)_20%,transparent_42%)]" />
+                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.62)_0%,rgba(255,255,255,0.18)_19%,transparent_40%)]" />
                           {/* travelling sheen on hover */}
-                          <span className="pointer-events-none absolute -inset-y-10 -left-1/2 w-1/3 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[115%] group-hover:opacity-100" />
+                          <span className="pointer-events-none absolute -inset-y-10 -left-1/2 w-1/3 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.85),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[115%] group-hover:opacity-100" />
                           {/* inner glass rim */}
-                          <div className="pointer-events-none absolute inset-0 rounded-[42%/28%] ring-1 ring-inset ring-white/35 transition-shadow duration-500 group-hover:ring-white/60" />
-                          <span className="glass absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white shadow-[0_6px_16px_-8px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:-translate-y-0.5">
+                          <div className="pointer-events-none absolute inset-0 rounded-[42%/28%] ring-1 ring-inset ring-white/55 transition-shadow duration-500 group-hover:ring-white/80" />
+                          <span className="glass-dark absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white shadow-[0_6px_16px_-8px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:-translate-y-0.5">
                             {p.region}
                           </span>
                         </div>
                         {/* breather hole at the base of the pane */}
-                        <span className="pointer-events-none absolute bottom-[1.35rem] left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-black/45 shadow-[inset_0_1px_1px_rgba(0,0,0,0.6),0_1px_0_rgba(255,255,255,0.5)] sm:bottom-6" />
+                        <span className="pointer-events-none absolute bottom-[1.35rem] left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-black/60 shadow-[inset_0_1px_1px_rgba(0,0,0,0.7),0_1px_0_rgba(255,255,255,0.7)] sm:bottom-6" />
                       </div>
                       </div>
 
@@ -319,11 +319,11 @@ export default function Destination() {
                         {/* bevelled top facet - the specular line that sells the glass */}
                         <span className="pointer-events-none absolute inset-x-3 top-px h-px bg-gradient-to-r from-transparent via-brown/20 to-transparent" />
                         {/* raked light sweeping across the facet on hover */}
-                        <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.10),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
+                        <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.16),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
                         <p className="relative text-sm font-semibold leading-tight text-ink">
                           {p.name}
                         </p>
-                        <p className="relative mt-0.5 text-[0.6rem] font-medium uppercase tracking-[0.22em] text-ink/60">
+                        <p className="relative mt-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-ink/70">
                           {p.tag}
                         </p>
                       </div>

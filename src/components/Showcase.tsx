@@ -4,7 +4,7 @@ import { Arrow, Check, Pin, Star } from "../icons";
 
 // Drifting blossom petals - deterministic configs (no hydration surprises).
 const PETALS = Array.from({ length: 18 }, (_, i) => {
-  const fg = i >= 15; // last three drift in the foreground, softly blurred
+  const fg = i >= 15; // last three drift in the foreground - bigger, not blurred
   return {
     left: (i * 5.6 + (i % 3) * 4) % 100,
     size: (fg ? 16 : 8) + (i % 4) * 3,
@@ -13,7 +13,7 @@ const PETALS = Array.from({ length: 18 }, (_, i) => {
     color: ["#f6c6d5", "#efb0c4", "#f4d3c0", "#e79fbb", "#fbe0e7"][i % 5],
     sway: (i % 2 ? 1 : -1) * (28 + (i % 4) * 14),
     spin: (i % 2 ? 1 : -1) * (300 + (i % 5) * 60),
-    opacity: fg ? 0.5 : 0.8,
+    opacity: fg ? 0.7 : 0.9,
     fg,
   };
 });
@@ -27,7 +27,6 @@ function petalStyle(p: Petal): React.CSSProperties {
     height: p.size,
     background: p.color,
     borderRadius: "50% 0 50% 50%",
-    filter: p.fg ? "blur(1.2px)" : undefined,
     animation: `petal-fall ${p.dur}s linear ${p.delay}s infinite`,
     ["--petal-sway" as string]: `${p.sway}px`,
     ["--petal-spin" as string]: `${p.spin}deg`,
@@ -98,15 +97,15 @@ export default function Showcase() {
           <img
             src={showcase.bg}
             alt="Misty traditional building with a tiled roof framed by red plum blossoms"
-            className="absolute inset-0 h-full w-full object-cover object-[50%_34%]"
+            className="absolute inset-0 h-full w-full object-cover object-[50%_34%] saturate-[1.12] contrast-[1.05] brightness-[1.04]"
             loading="lazy"
           />
           {/* depth + legibility grading (kept light so the scene stays rich) */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-transparent to-forest-deep/25" />
-          <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_120%,rgba(39,76,53,0.4),transparent_60%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/22 via-transparent to-forest-deep/16" />
+          <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_120%,rgba(39,76,53,0.3),transparent_62%)]" />
           {/* brand-tinted glows */}
-          <div className="pointer-events-none absolute -left-16 top-8 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(58,106,74,0.28),transparent_70%)] blur-2xl" />
-          <div className="pointer-events-none absolute -right-10 bottom-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(122,92,62,0.22),transparent_70%)] blur-2xl" />
+          <div className="pointer-events-none absolute -left-16 top-8 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(58,106,74,0.3),rgba(58,106,74,0.09)_46%,transparent_72%)]" />
+          <div className="pointer-events-none absolute -right-10 bottom-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(122,92,62,0.24),rgba(122,92,62,0.08)_46%,transparent_72%)]" />
 
           {/* drifting petals - behind the phone */}
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -118,7 +117,7 @@ export default function Showcase() {
           {/* ---------- floating glass feature cards ---------- */}
           {/* city pill - top */}
           <div
-            className="absolute left-1/2 top-6 z-20 hidden items-center gap-2 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold text-ink shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:flex"
+            className="absolute left-1/2 top-6 z-20 hidden items-center gap-2 rounded-full border border-white bg-white px-4 py-2 text-xs font-semibold text-ink shadow-soft-md ring-1 ring-black/[0.06] transition-transform duration-300 ease-out will-change-transform sm:flex"
             style={{ transform: "translate3d(calc(-50% + var(--mx,0) * 16px), calc(var(--my,0) * 8px), 0)" }}
           >
             <Pin className="h-3.5 w-3.5 text-forest" />
@@ -127,7 +126,7 @@ export default function Showcase() {
 
           {/* visa speed - upper left */}
           <div
-            className="absolute left-4 top-16 z-20 flex items-center gap-3 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:left-10 sm:top-24"
+            className="absolute left-4 top-16 z-20 flex items-center gap-3 rounded-2xl border border-white bg-white px-4 py-3 shadow-soft-md ring-1 ring-black/[0.06] transition-transform duration-300 ease-out will-change-transform sm:left-10 sm:top-24"
             style={par(28, 22)}
           >
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-forest-soft to-forest-deep text-white">
@@ -135,22 +134,22 @@ export default function Showcase() {
             </span>
             <div className="leading-tight">
               <p className="text-sm font-bold text-ink">Visa in ~5 days</p>
-              <p className="text-[0.7rem] text-ink/60">Approved &amp; delivered</p>
+              <p className="text-[0.7rem] text-ink/75">Approved &amp; delivered</p>
             </div>
           </div>
 
           {/* remote - right */}
           <div
-            className="absolute right-4 top-28 z-20 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:right-12 sm:top-40"
+            className="absolute right-4 top-28 z-20 rounded-2xl border border-white bg-white px-4 py-3 shadow-soft-md ring-1 ring-black/[0.06] transition-transform duration-300 ease-out will-change-transform sm:right-12 sm:top-40"
             style={par(-24, 18)}
           >
             <p className="text-sm font-bold text-forest">100% remote</p>
-            <p className="text-[0.7rem] text-ink/60">No embassy visits</p>
+            <p className="text-[0.7rem] text-ink/75">No embassy visits</p>
           </div>
 
           {/* rating - lower left */}
           <div
-            className="absolute bottom-14 left-4 z-20 flex items-center gap-3 rounded-2xl border border-white/60 bg-white/85 px-4 py-3 shadow-soft-md backdrop-blur-md transition-transform duration-300 ease-out will-change-transform sm:bottom-20 sm:left-14"
+            className="absolute bottom-14 left-4 z-20 flex items-center gap-3 rounded-2xl border border-white bg-white px-4 py-3 shadow-soft-md ring-1 ring-black/[0.06] transition-transform duration-300 ease-out will-change-transform sm:bottom-20 sm:left-14"
             style={par(22, -18)}
           >
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-brown text-white">
@@ -158,14 +157,14 @@ export default function Showcase() {
             </span>
             <div className="leading-tight">
               <p className="text-sm font-bold text-ink">4.9 / 5</p>
-              <p className="text-[0.7rem] text-ink/60">18k travellers</p>
+              <p className="text-[0.7rem] text-ink/75">18k travellers</p>
             </div>
           </div>
 
           {/* ---------- the 3D phone, emerging from the scene ---------- */}
           <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-6 [perspective:2000px]">
             {/* grounding shadow */}
-            <div className="absolute -bottom-2 left-1/2 h-10 w-[80%] -translate-x-1/2 rounded-[100%] bg-forest-deep/40 blur-2xl" />
+            <div className="absolute -bottom-2 left-1/2 h-12 w-[86%] -translate-x-1/2 rounded-[100%] bg-[radial-gradient(closest-side,rgba(39,76,53,0.55),rgba(39,76,53,0.16)_60%,transparent_100%)]" />
             <div
               className="relative aspect-[9/19.3] w-[15rem] rounded-[2.8rem] bg-gradient-to-br from-[#3a3a3d] via-[#111114] to-[#0a0a0c] p-[0.45rem] shadow-[0_50px_90px_-30px_rgba(0,0,0,0.6),0_12px_30px_-12px_rgba(0,0,0,0.45)] ring-1 ring-white/10 [transition:transform_.3s_ease-out] will-change-transform sm:w-[17rem]"
               style={{
@@ -185,10 +184,10 @@ export default function Showcase() {
                   {/* image hero */}
                   <div className="relative flex-[1.5] overflow-hidden">
                     <img src={showcase.appPhoto} alt="" className="h-full w-full object-cover" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/85 via-forest-deep/20 to-black/25" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/88 via-forest-deep/10 to-black/16" />
 
                     {/* top bar */}
-                    <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-7 text-[0.6rem] font-semibold tracking-[0.16em] text-white/90">
+                    <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-7 text-[0.6rem] font-semibold tracking-[0.16em] text-white">
                       <span>{showcase.brand}</span>
                       <span>MENU</span>
                     </div>
@@ -196,7 +195,7 @@ export default function Showcase() {
                     {/* headline + CTA */}
                     <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
                       <h3 className="text-[1.05rem] font-extrabold leading-tight text-white">{showcase.appHeadline}</h3>
-                      <p className="mt-1 text-[0.66rem] text-white/80">{showcase.appSub}</p>
+                      <p className="mt-1 text-[0.66rem] text-white/90">{showcase.appSub}</p>
                       <div className="mt-3 flex items-center justify-between rounded-xl bg-forest px-3.5 py-2.5 text-[0.72rem] font-bold text-white shadow-sm">
                         {showcase.cta}
                         <Arrow className="h-3.5 w-3.5" />
@@ -223,7 +222,7 @@ export default function Showcase() {
                   {/* city ticker */}
                   <div className="overflow-hidden bg-forest-deep py-2">
                     <div
-                      className="flex w-max whitespace-nowrap text-[0.58rem] font-bold uppercase tracking-[0.16em] text-white/90"
+                      className="flex w-max whitespace-nowrap text-[0.58rem] font-bold uppercase tracking-[0.16em] text-white"
                       style={{ animation: "ticker 16s linear infinite" }}
                     >
                       {[...showcase.ticker, ...showcase.ticker, ...showcase.ticker].map((c, i) => (
@@ -236,7 +235,7 @@ export default function Showcase() {
                 </div>
 
                 {/* glass reflection */}
-                <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] bg-gradient-to-tr from-transparent via-white/5 to-white/20" />
+                <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] bg-gradient-to-tr from-transparent via-white/[0.06] to-white/28" />
               </div>
             </div>
           </div>
@@ -259,7 +258,7 @@ export default function Showcase() {
               <Arrow className="h-4 w-4" />
             </span>
           </a>
-          <p className="text-sm text-ink/70">
+          <p className="text-sm text-ink/80">
             From <span className="font-bold text-ink">{showcase.price}</span> per person · {showcase.discount.toLowerCase()}
           </p>
         </div>

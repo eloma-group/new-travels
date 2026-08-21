@@ -107,26 +107,21 @@ export default function Invitation() {
         />
         <div className="absolute -left-40 top-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(160,125,84,0.16),transparent_68%)]" />
         <div className="absolute -right-32 bottom-4 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(122,92,62,0.14),transparent_68%)]" />
-        <div
-          className="absolute inset-0 opacity-[0.1] mix-blend-multiply"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")",
-            backgroundSize: "140px 140px",
-          }}
-        />
+        {/* The grain that used to multiply over this whole band is gone - it
+            sat on top of the wordmark's photograph and took the gloss off it.
+            The contour rings and the two warm glows carry the texture. */}
       </div>
 
       {/* ---------------- vertical edge rails ---------------- */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-7 top-1/2 hidden whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.42em] text-brown/45 [transform:translate(-50%,-50%)_rotate(-90deg)] xl:block"
+        className="pointer-events-none absolute left-7 top-1/2 hidden whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.42em] text-brown/60 [transform:translate(-50%,-50%)_rotate(-90deg)] xl:block"
       >
         Lat 27.2°N · Lon 78.0°E
       </span>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute right-7 top-1/2 hidden whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.42em] text-brown/45 [transform:translate(50%,-50%)_rotate(90deg)] xl:block"
+        className="pointer-events-none absolute right-7 top-1/2 hidden whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.42em] text-brown/60 [transform:translate(50%,-50%)_rotate(90deg)] xl:block"
       >
         Chapter 03 · The invitation
       </span>
@@ -180,14 +175,14 @@ export default function Invitation() {
                   }
                 >
                   <div className="rounded-[1.35rem] bg-gradient-to-b from-[#f7f1e6] to-[#e2d7c5] p-2 shadow-[0_28px_50px_-24px_rgba(58,44,24,0.6),inset_0_2px_2px_rgba(255,255,255,0.95)] ring-1 ring-brown/15 transition-shadow duration-500 group-hover/plate:shadow-[0_40px_66px_-26px_rgba(58,44,24,0.72)]">
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-[1rem] shadow-[inset_0_2px_10px_rgba(58,44,24,0.45)]">
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-[1rem] shadow-[inset_0_2px_4px_rgba(58,44,24,0.3)]">
                       <img
                         src={pl.img}
                         alt={pl.name}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/plate:scale-[1.09]"
+                        className="h-full w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-700 ease-out group-hover/plate:scale-[1.09] group-hover/plate:brightness-[1.1] group-hover/plate:saturate-[1.2]"
                       />
-                      <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.42),transparent_44%)]" />
+                      <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.5),rgba(255,255,255,0.12)_20%,transparent_42%)]" />
                     </div>
                   </div>
                   {/* cut-crystal nameplate */}
@@ -195,11 +190,11 @@ export default function Invitation() {
                     {/* bevelled top facet - the specular line that sells the glass */}
                     <span className="pointer-events-none absolute inset-x-2 top-px h-px bg-gradient-to-r from-transparent via-brown/20 to-transparent" />
                     {/* raked light sweeping across the facet on hover */}
-                    <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.10),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover/plate:left-[125%] group-hover/plate:opacity-100" />
+                    <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.16),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover/plate:left-[125%] group-hover/plate:opacity-100" />
                     <p className="relative text-[0.72rem] font-semibold leading-tight text-ink">
                       {pl.name}
                     </p>
-                    <p className="relative mt-0.5 text-[0.52rem] font-medium uppercase tracking-[0.18em] text-ink/60">
+                    <p className="relative mt-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.18em] text-ink/70">
                       {pl.tag}
                     </p>
                   </div>
@@ -217,7 +212,7 @@ export default function Invitation() {
             <div className="overflow-hidden">
               <span
                 aria-hidden="true"
-                className="block font-heading text-[clamp(5.5rem,31vw,32rem)] font-bold uppercase leading-[0.8] tracking-[-0.05em] brightness-[1.18] saturate-[1.12] transition-[filter] duration-700 ease-out group-hover:brightness-[1.34] group-hover:saturate-[1.32]"
+                className="block font-heading text-[clamp(5.5rem,31vw,32rem)] font-bold uppercase leading-[0.8] tracking-[-0.05em] brightness-[1.24] contrast-[1.08] saturate-[1.2] transition-[filter] duration-700 ease-out group-hover:brightness-[1.42] group-hover:contrast-[1.12] group-hover:saturate-[1.44]"
                 style={{ ...fill("40%"), ...word(0.16) }}
               >
                 {invite.words[0]}
@@ -227,7 +222,7 @@ export default function Invitation() {
             <div className="overflow-hidden">
               <span
                 aria-hidden="true"
-                className="block font-heading text-[clamp(1.9rem,10.4vw,10.5rem)] font-bold uppercase leading-[1.02] tracking-[0.08em] brightness-[1.18] saturate-[1.12] transition-[filter] duration-700 ease-out group-hover:brightness-[1.34] group-hover:saturate-[1.32]"
+                className="block font-heading text-[clamp(1.9rem,10.4vw,10.5rem)] font-bold uppercase leading-[1.02] tracking-[0.08em] brightness-[1.24] contrast-[1.08] saturate-[1.2] transition-[filter] duration-700 ease-out group-hover:brightness-[1.42] group-hover:contrast-[1.12] group-hover:saturate-[1.44]"
                 style={{ ...fill("52%"), ...word(0.32) }}
               >
                 {invite.words[1]}
@@ -281,7 +276,7 @@ export default function Invitation() {
 
         {/* ==================== the route book ==================== */}
         <div className="mt-10 border-t border-brown/20 pt-6" style={enter("fade-up", 0.98)}>
-          <p className="text-[0.66rem] font-bold uppercase tracking-[0.34em] text-brown/70">
+          <p className="text-[0.66rem] font-bold uppercase tracking-[0.34em] text-brown">
             {invite.indexTitle}
           </p>
 
@@ -290,9 +285,9 @@ export default function Invitation() {
               <li key={row.n}>
                 <a
                   href="#packages"
-                  className="group/row relative flex h-full items-baseline gap-3 bg-cream/85 px-5 py-5 transition-colors duration-500 hover:bg-[#f3ece0]"
+                  className="group/row relative flex h-full items-baseline gap-3 bg-[#fdfbf6] px-5 py-5 transition-colors duration-500 hover:bg-white"
                 >
-                  <span className="font-heading text-xs font-bold tracking-[0.16em] text-brown/45 transition-colors duration-500 group-hover/row:text-brown">
+                  <span className="font-heading text-xs font-bold tracking-[0.16em] text-brown/60 transition-colors duration-500 group-hover/row:text-brown">
                     {row.n}
                   </span>
                   <span className="min-w-0">
@@ -302,7 +297,7 @@ export default function Invitation() {
                     <span className="mt-1 block text-[0.6rem] uppercase tracking-[0.2em] text-ink-faint">
                       {row.coord}
                     </span>
-                    <span className="mt-2 block text-xs text-ink/70">{row.note}</span>
+                    <span className="mt-2 block text-xs text-ink/80">{row.note}</span>
                   </span>
                   <Arrow className="ml-auto h-3.5 w-3.5 shrink-0 self-center text-brown opacity-0 transition-all duration-500 group-hover/row:translate-x-0.5 group-hover/row:opacity-100" />
                   {/* a brown rule draws itself along the foot of the cell */}

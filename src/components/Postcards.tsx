@@ -21,7 +21,7 @@ const drift = (x: number, y: number): React.CSSProperties => ({
 
 /* The paper itself: white stock, hairline edge, straightens on hover. */
 const paper =
-  "group/card relative overflow-hidden rounded-[3px] bg-white shadow-soft-md ring-1 ring-black/[0.05] transition-transform duration-500 ease-lux xl:hover:rotate-0 xl:hover:scale-[1.03]";
+  "group/card relative overflow-hidden rounded-[3px] bg-white shadow-soft-md ring-1 ring-black/[0.08] transition-[transform,box-shadow] duration-500 ease-lux xl:hover:shadow-soft-lg xl:hover:-translate-y-1.5 xl:hover:rotate-0";
 
 function Caption({
   name,
@@ -73,7 +73,7 @@ export default function Postcards() {
       {/* ---------- contour-map ground ---------- */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[url('/images/collage-topo.jpg')] bg-cover bg-top bg-no-repeat opacity-80"
+        className="pointer-events-none absolute inset-0 bg-[url('/images/collage-topo.jpg')] bg-cover bg-top bg-no-repeat opacity-95"
       />
       {/* fade the plate into the cream above and below it */}
       <div
@@ -87,14 +87,14 @@ export default function Postcards() {
       {/* ---------- ghost script behind everything ---------- */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-script text-[clamp(6rem,22vw,20rem)] leading-none text-brown/[0.055]"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-script text-[clamp(6rem,22vw,20rem)] leading-none text-brown/[0.08]"
       >
         {pc.watermark}
       </span>
 
       {/* ================= centred core ================= */}
       <div className="shell relative z-10 flex flex-col items-center text-center xl:min-h-[36rem] xl:justify-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white/80 py-1.5 pl-2 pr-4 text-sm font-medium text-ink shadow-soft-sm backdrop-blur-sm">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white bg-white py-1.5 pl-2 pr-4 text-sm font-semibold text-ink shadow-soft-sm ring-1 ring-brown/12">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-brown-soft to-brown-deep text-white">
             <Sparkle className="h-3.5 w-3.5" />
           </span>
@@ -107,7 +107,7 @@ export default function Postcards() {
             src="/images/collage-landmark.png"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -left-44 -top-2 hidden w-36 opacity-90 lg:block xl:-left-56 xl:w-44"
+            className="pointer-events-none absolute -left-44 -top-2 hidden w-36 lg:block xl:-left-56 xl:w-44"
           />
           <p className="font-script text-[clamp(1.75rem,3.6vw,2.6rem)] leading-none text-brown">
             {pc.script}
@@ -226,7 +226,7 @@ export default function Postcards() {
                 alt={pc.stamp.alt}
                 className="h-32 w-full object-cover"
               />
-              <span className="absolute right-2 top-2 rounded-full bg-white/85 px-2 py-1 text-[0.55rem] font-bold uppercase tracking-[0.16em] text-brown-deep backdrop-blur-sm">
+              <span className="absolute right-2 top-2 rounded-full bg-white px-2 py-1 text-[0.55rem] font-bold uppercase tracking-[0.16em] text-brown-deep shadow-soft-sm">
                 {pc.stamp.note}
               </span>
             </div>
@@ -294,14 +294,14 @@ export default function Postcards() {
               <img
                 src={pc.reel.img}
                 alt={pc.reel.alt}
-                className="h-40 w-full object-cover transition-transform duration-700 ease-lux group-hover/card:scale-105 xl:h-44"
+                className="h-40 w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-700 ease-lux group-hover/card:scale-105 group-hover/card:brightness-[1.09] group-hover/card:saturate-[1.18] xl:h-44"
               />
               <button
                 type="button"
                 aria-label={`Play film- ${pc.reel.place}`}
                 className="absolute inset-0 grid place-items-center"
               >
-                <span className="grid h-14 w-14 place-items-center rounded-full bg-white/90 text-ink shadow-soft-md backdrop-blur-sm transition-transform duration-300 hover:scale-110">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-white text-ink shadow-soft-md ring-1 ring-black/10 transition-transform duration-300 hover:scale-110">
                   <Play className="h-6 w-6" />
                 </span>
               </button>

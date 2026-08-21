@@ -336,7 +336,20 @@ function Field({
   );
 }
 
-/* ---------------- the card ---------------- */
+/* ---------------- the card ----------------
+
+   The card leans inside its own perspective and its plates float in front of
+   the photograph. `translateZ` magnifies by P / (P - Z), so a plate lifted
+   without its inverse scale is rendered at 1x and then enlarged - the badges
+   by 3.6%, the name and price by 1.8%, which is what made the whole grid read
+   soft. Lift and inverse always travel together here, so each plate is drawn
+   at exactly the size it is shown. */
+const CARD_PERSPECTIVE = 1500;
+const BADGE_Z = 52;
+const PLATE_Z = 26;
+const lift = (z: number): React.CSSProperties => ({
+  transform: `translateZ(${z}px) scale(${(1 - z / CARD_PERSPECTIVE).toFixed(5)})`,
+});
 
 function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
   const wrap = useRef<HTMLDivElement>(null);
@@ -353,8 +366,8 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
     const r = wrap.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
-    set("--rx", `${(0.5 - py) * 9}deg`);
-    set("--ry", `${(px - 0.5) * 11}deg`);
+    set("--rx", `${(0.5 - py) * 6}deg`);
+    set("--ry", `${(px - 0.5) * 7}deg`);
   };
 
   const enter = () => tilt.current && set("--ty", "-10px");
@@ -397,9 +410,9 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
             src={p.img}
             alt={p.alt}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.14]"
+            className="h-full w-full object-cover saturate-[1.1] contrast-[1.05] brightness-[1.03] transition-[transform,filter] duration-[1100ms] ease-out group-hover:scale-[1.14] group-hover:brightness-[1.09] group-hover:saturate-[1.2]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/5 to-ink/15" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/[0.03] to-ink/10" />
 
           {/* ---- the detail sheet ----
                A scrim, not a blur: the photograph keeps its edges and only
@@ -409,12 +422,12 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
           <div className="absolute inset-0 flex translate-y-5 flex-col justify-end p-6 opacity-0 transition-[opacity,transform] duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
             <span
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,16,13,0.52)_0%,rgba(20,16,13,0.84)_44%,rgba(20,16,13,0.95)_100%)]"
+              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,16,13,0.5)_0%,rgba(20,16,13,0.82)_44%,rgba(20,16,13,0.94)_100%)]"
             />
 
             <div className="relative">
               {/* the leg */}
-              <div className="flex items-center gap-3 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-white/80">
+              <div className="flex items-center gap-3 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-white/95">
                 {AIRPORTS[p.from] ?? p.from}
                 <span className="relative h-px flex-1 origin-left scale-x-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.5)_0_4px,transparent_4px_9px)] transition-transform delay-150 duration-700 ease-out group-hover:scale-x-100">
                   <Plane className="absolute -top-2 right-0 h-4 w-4 translate-x-1 text-white" />
@@ -440,7 +453,7 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
               </ul>
 
               {/* when it runs */}
-              <p className="mt-6 flex items-center gap-3 border-t border-white/15 pt-4 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-white/55">
+              <p className="mt-6 flex items-center gap-3 border-t border-white/30 pt-4 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-white/90">
                 {season(p.months)}
                 <span aria-hidden="true" className="h-2.5 w-px bg-white/25" />
                 {p.group}
@@ -451,8 +464,8 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
 
         {/* ---- badges: siblings of the media, so they can stand off the card ---- */}
         <span
-          className="pointer-events-none absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-brown-deep shadow-soft-sm ring-1 ring-white/60 backdrop-blur-sm"
-          style={{ transform: "translateZ(52px)" }}
+          className="pointer-events-none absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-brown-deep shadow-soft-sm ring-1 ring-brown/15"
+          style={lift(BADGE_Z)}
         >
           {p.tag}
         </span>
@@ -460,14 +473,14 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
         {p.was ? (
           <span
             className="pointer-events-none absolute right-4 top-4 rounded-full bg-brown-deep px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.16em] text-cream shadow-soft-sm"
-            style={{ transform: "translateZ(52px)" }}
+            style={lift(BADGE_Z)}
           >
             Save {off}%
           </span>
         ) : (
           <span
-            className="pointer-events-none absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[0.65rem] font-bold text-brown-deep shadow-soft-sm ring-1 ring-white/60 backdrop-blur-sm"
-            style={{ transform: "translateZ(52px)" }}
+            className="pointer-events-none absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[0.65rem] font-bold text-brown-deep shadow-soft-sm ring-1 ring-brown/15"
+            style={lift(BADGE_Z)}
           >
             <Star className="h-3 w-3 text-brown-soft" />
             {p.rating.toFixed(1)}
@@ -477,7 +490,7 @@ function Card({ p, i, shown }: { p: Pkg; i: number; shown: boolean }) {
         {/* ---- the plate: name and price, always readable ---- */}
         <div
           className="flex flex-1 flex-col p-5"
-          style={{ transform: "translateZ(26px)" }}
+          style={lift(PLATE_Z)}
         >
           <p className="truncate text-[0.6rem] font-bold uppercase tracking-[0.24em] text-brown">
             {p.places}
@@ -580,7 +593,7 @@ function Board() {
               src={p.img.replace("w=900", "w=2000")}
               alt=""
               loading={n === 0 ? "eager" : "lazy"}
-              className="h-full w-full object-cover transition-transform duration-[6000ms] ease-out"
+              className="h-full w-full object-cover saturate-[1.12] contrast-[1.05] brightness-[1.05] transition-transform duration-[6000ms] ease-out"
               style={{
                 transform: `translate3d(var(--dx,0px), var(--dy,0px), 0) scale(${
                   on ? 1.14 : 1.04
@@ -597,7 +610,7 @@ function Board() {
         className="absolute inset-0 z-[3]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(20,16,13,0.72) 0%, rgba(20,16,13,0.42) 34%, rgba(20,16,13,0.68) 72%, rgba(20,16,13,0.92) 100%)",
+            "linear-gradient(180deg, rgba(20,16,13,0.58) 0%, rgba(20,16,13,0.26) 34%, rgba(20,16,13,0.56) 72%, rgba(20,16,13,0.86) 100%)",
         }}
       />
       <div
@@ -605,18 +618,16 @@ function Board() {
         className="absolute inset-0 z-[3]"
         style={{
           background:
-            "radial-gradient(120% 90% at 18% 42%, rgba(20,16,13,0.62) 0%, transparent 62%)",
+            "radial-gradient(120% 90% at 18% 42%, rgba(20,16,13,0.44) 0%, transparent 62%)",
         }}
       />
-      {/* film grain */}
-      <div
+      {/* A film grain used to sit over the whole board on `mix-blend-overlay`.
+          It is a noise texture laid across the photograph and across the
+          headline standing on it, which is the definition of a matte finish -
+          so it is gone, and the plate underneath keeps its own gloss. */}
+      <span
         aria-hidden="true"
-        className="absolute inset-0 z-[3] opacity-[0.16] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
-          backgroundSize: "160px 160px",
-        }}
+        className="absolute inset-0 z-[3] bg-[linear-gradient(122deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.04)_22%,transparent_46%)]"
       />
       {/* the board hands the page down to the cream below it */}
       <div
@@ -627,15 +638,15 @@ function Board() {
       <div className="shell relative z-10 pb-40 pt-32 sm:pb-44 sm:pt-40 lg:pb-48">
         {/* dateline */}
         <div
-          className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-white/20 pb-4"
+          className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-white/35 pb-4"
           style={rise(true, 0)}
         >
           <p className="text-[0.62rem] font-bold uppercase tracking-[0.32em] text-gold-soft">
             {packagesPage.eyebrow}
-            <span className="mx-3 text-white/30">/</span>
-            <span className="text-white/70">India &amp; Australia</span>
-            <span className="mx-3 text-white/30">/</span>
-            <span className="text-white/70">2026 - 2027 departures</span>
+            <span className="mx-3 text-white/90">/</span>
+            <span className="text-white/90">India &amp; Australia</span>
+            <span className="mx-3 text-white/90">/</span>
+            <span className="text-white/90">2026 - 2027 departures</span>
           </p>
           <span className="-rotate-2 font-script text-xl text-gold-soft sm:text-2xl">
             {packagesPage.script}
@@ -667,14 +678,14 @@ function Board() {
             </h1>
 
             <p
-              className="mt-8 max-w-xl text-[0.98rem] leading-relaxed text-white/80"
+              className="mt-8 max-w-xl text-[0.98rem] leading-relaxed text-white/90"
               style={rise(true, 4)}
             >
               {packagesPage.copy}
             </p>
 
             <div
-              className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6 border-t border-white/15 pt-7"
+              className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6 border-t border-white/30 pt-7"
               style={rise(true, 5)}
             >
               {packagesPage.stats.map((s) => (
@@ -682,7 +693,7 @@ function Board() {
                   <p className="font-heading text-3xl font-bold tabular-nums text-white sm:text-4xl">
                     {s.value}
                   </p>
-                  <p className="mt-1 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-white/55">
+                  <p className="mt-1 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-white/90">
                     {s.label}
                   </p>
                 </div>
@@ -697,7 +708,7 @@ function Board() {
             onMouseLeave={() => setHeld(false)}
             style={rise(true, 3)}
           >
-            <p className="mb-1 text-[0.55rem] font-bold uppercase tracking-[0.3em] text-white/45">
+            <p className="mb-1 text-[0.55rem] font-bold uppercase tracking-[0.3em] text-white/75">
               Now boarding
             </p>
             {featured.map((p, n) => {
@@ -710,12 +721,12 @@ function Board() {
                   aria-pressed={on}
                   className={`group relative overflow-hidden rounded-2xl px-4 py-3 text-left transition-all duration-500 ${
                     on
-                      ? "glass ring-1 ring-gold/60"
-                      : "ring-1 ring-white/12 hover:bg-white/10 hover:ring-white/25"
+                      ? "glass-dark ring-1 ring-gold/70"
+                      : "bg-[linear-gradient(140deg,rgba(24,18,14,0.5),rgba(24,18,14,0.4))] ring-1 ring-white/25 hover:bg-[linear-gradient(140deg,rgba(24,18,14,0.66),rgba(24,18,14,0.56))] hover:ring-white/45"
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <span className="w-[3.4rem] shrink-0 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-white/60 tabular-nums">
+                    <span className="w-[3.4rem] shrink-0 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-white/85 tabular-nums">
                       {AIRPORTS[p.from] ?? p.from}
                       <span className="mx-1 text-gold-soft">&#8594;</span>
                     </span>
@@ -726,12 +737,12 @@ function Board() {
                       <span className="block truncate text-[0.86rem] font-semibold text-white">
                         {p.name}
                       </span>
-                      <span className="mt-0.5 block truncate text-[0.68rem] text-white/55">
+                      <span className="mt-0.5 block truncate text-[0.68rem] text-white/90">
                         {p.nights} nights · {season(p.months)}
                       </span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block text-[0.55rem] uppercase tracking-[0.16em] text-white/45">
+                      <span className="block text-[0.55rem] uppercase tracking-[0.16em] text-white/75">
                         from
                       </span>
                       <span className="block text-sm font-bold tabular-nums text-gold-soft">
@@ -925,7 +936,7 @@ export default function Packages() {
           <div
             className={`transition-colors duration-300 ${
               stuck
-                ? "border-b border-brown/12 bg-cream/85 shadow-soft-sm backdrop-blur-xl"
+                ? "border-b border-brown/20 bg-cream shadow-soft-sm"
                 : "border-b border-transparent"
             }`}
           >
@@ -934,7 +945,7 @@ export default function Packages() {
             className={`transition-all duration-300 ${
               stuck
                 ? "py-2"
-                : "rounded-[30px] bg-cream/92 p-2.5 shadow-soft-lg ring-1 ring-brown/12 backdrop-blur-xl sm:p-3"
+                : "rounded-[30px] bg-cream p-2.5 shadow-soft-lg ring-1 ring-brown/20 sm:p-3"
             }`}
           >
             {/* header rail */}
@@ -1162,7 +1173,7 @@ export default function Packages() {
                 <h3 className="mt-5 font-heading text-lg font-bold leading-tight text-brown-deep">
                   {it.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink/75">{it.copy}</p>
+                <p className="mt-3 text-sm leading-relaxed text-ink/80">{it.copy}</p>
               </li>
             ))}
           </ol>
@@ -1193,12 +1204,12 @@ export default function Packages() {
                 <h2 className="mt-3 font-heading text-[clamp(2rem,4.8vw,3.4rem)] font-bold leading-[1] tracking-[-0.035em]">
                   {packagesPage.cta.heading[0]}
                   <br />
-                  <span className="text-cream/70">{packagesPage.cta.heading[1]}</span>
+                  <span className="text-cream/80">{packagesPage.cta.heading[1]}</span>
                 </h2>
               </div>
 
               <div style={rise(ctaShown, 2)}>
-                <p className="text-[0.95rem] leading-relaxed text-cream/80">
+                <p className="text-[0.95rem] leading-relaxed text-cream/90">
                   {packagesPage.cta.copy}
                 </p>
                 <Link

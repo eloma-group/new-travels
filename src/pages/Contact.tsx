@@ -254,7 +254,7 @@ function Note() {
               onChange={(e) => setExtra(e.target.value)}
               rows={3}
               placeholder="An anniversary, a fear of small planes, a room that has to have a bath."
-              className="mt-3 w-full resize-none rounded-2xl border border-brown/20 bg-cream/60 px-4 py-3 text-[0.95rem] leading-relaxed text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-brown/55 focus:bg-cream"
+              className="mt-3 w-full resize-none rounded-2xl border border-brown/20 bg-[#fbf8f1] px-4 py-3 text-[0.95rem] leading-relaxed text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-brown/55 focus:bg-cream"
             />
           </label>
 
@@ -294,6 +294,17 @@ function Note() {
 type Tile = (typeof contactPage.mosaic)[number];
 type TileFace = Tile["faces"][number];
 
+/* The band stands in a 900px perspective, and `translateZ` inside a
+   perspective magnifies by P / (P - Z): the faces sit 11px forward and lift
+   another 34px under the pointer, so every tile was being rasterised at 1x and
+   then blown up 1.2% at rest and 5.2% on hover - which is exactly why the
+   photographs and their captions went soft the moment you pointed at one.
+   Each step below is paired with the scale that cancels it:
+     11px -> 1 - 11/900 = 0.98778
+     34px -> 1 - 34/900 = 0.96222
+   They are written out rather than computed, because Tailwind reads these
+   class names out of the source and cannot see through an interpolation. */
+
 const spanCls: Record<string, string> = {
   sm: "col-span-1 row-span-1",
   tall: "col-span-1 row-span-1 lg:row-span-2",
@@ -323,40 +334,42 @@ const level = (e: React.MouseEvent<HTMLElement>) => {
   e.currentTarget.style.setProperty("--ty", "0");
 };
 
+
+
 function MosaicFace({ face, back = false }: { face: TileFace; back?: boolean }) {
   return (
     <figure
       className={`absolute inset-0 overflow-hidden rounded-[1.35rem] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] ${
         back
-          ? "[transform:rotate3d(var(--ax,0),var(--ay,1),0,180deg)_translateZ(11px)]"
-          : "[transform:translateZ(11px)]"
+          ? "[transform:rotate3d(var(--ax,0),var(--ay,1),0,180deg)_translateZ(11px)_scale(0.98778)]"
+          : "[transform:translateZ(11px)_scale(0.98778)]"
       }`}
     >
       <img
         src={face.img}
         alt={face.alt}
         loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.07]"
+        className="h-full w-full object-cover saturate-[1.1] contrast-[1.05] brightness-[1.03] transition-[transform,filter] duration-[1200ms] ease-out group-hover:scale-[1.07] group-hover:brightness-[1.1] group-hover:saturate-[1.2]"
       />
       {/* scrim - dark enough to carry white type, light enough to keep the view */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(29,22,19,0.46)_0%,rgba(29,22,19,0.14)_40%,rgba(29,22,19,0.70)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(29,22,19,0.36)_0%,rgba(29,22,19,0.06)_40%,rgba(29,22,19,0.62)_100%)]" />
       {/* raked light across the face, so the tile catches an edge as it turns */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.24)_0%,rgba(255,255,255,0.06)_26%,transparent_46%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.08)_25%,transparent_44%)]" />
 
       <figcaption className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
         <p className="font-heading text-[clamp(1.05rem,1.9vw,2.05rem)] font-bold leading-tight text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]">
           {face.title}
         </p>
-        <p className="mt-2 font-script text-[clamp(0.95rem,1.35vw,1.5rem)] leading-none text-cream/90 [text-shadow:0_2px_14px_rgba(0,0,0,0.55)]">
+        <p className="mt-2 font-script text-[clamp(0.95rem,1.35vw,1.5rem)] leading-none text-cream [text-shadow:0_2px_14px_rgba(0,0,0,0.55)]">
           {face.kicker}
         </p>
       </figcaption>
 
       {/* lit top edge and a rim, so the face reads as the polished side of a slab */}
       <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
-      <span className="pointer-events-none absolute inset-0 rounded-[1.35rem] ring-1 ring-inset ring-white/15" />
+      <span className="pointer-events-none absolute inset-0 rounded-[1.35rem] ring-1 ring-inset ring-white/30" />
       {/* sheen that travels the tile on hover */}
-      <span className="pointer-events-none absolute -inset-y-8 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.38),transparent)] opacity-0 transition-[left,opacity] duration-[1100ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
+      <span className="pointer-events-none absolute -inset-y-8 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] opacity-0 transition-[left,opacity] duration-[1100ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
     </figure>
   );
 }
@@ -452,7 +465,7 @@ function Mosaic() {
           >
             {/* lean shell - the tile stands at its own angle in the fan, leans
                 toward the pointer and lifts off the band on hover */}
-            <div className="relative h-full w-full [--fan:0] [--lift:0px] [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-11deg))_rotateY(calc(var(--rest,0deg)*var(--fan)_+_var(--tx,0)*14deg))_translateZ(var(--lift))] [transition:transform_.5s_ease-out] group-hover:[--lift:34px] group-focus-visible:[--lift:34px] lg:[--fan:1]">
+            <div className="relative h-full w-full [--fan:0] [--lift:0px] [--liftinv:1] [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-9deg))_rotateY(calc(var(--rest,0deg)*var(--fan)_+_var(--tx,0)*11deg))_translateZ(var(--lift))_scale(var(--liftinv))] [transition:transform_.5s_ease-out] group-hover:[--lift:34px] group-hover:[--liftinv:0.96222] group-focus-visible:[--lift:34px] group-focus-visible:[--liftinv:0.96222] lg:[--fan:1]">
               <div
                 className="relative h-full w-full [transform-style:preserve-3d] will-change-transform"
                 style={
@@ -642,7 +655,7 @@ function Chart({ office, head, now }: { office: Office; head: Office; now: Date 
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.75rem]"
         >
-          <div className="absolute -right-16 -top-14 h-[23rem] w-[23rem] opacity-[0.3] transition-opacity duration-500 group-hover/chart:opacity-[0.42] sm:-right-20 sm:h-[27rem] sm:w-[27rem] xl:-right-24 xl:h-[33rem] xl:w-[33rem]">
+          <div className="absolute -right-16 -top-14 h-[23rem] w-[23rem] opacity-[0.42] transition-opacity duration-500 group-hover/chart:opacity-[0.55] sm:-right-20 sm:h-[27rem] sm:w-[27rem] xl:-right-24 xl:h-[33rem] xl:w-[33rem]">
             <Rose heading={heading} />
           </div>
         </div>
@@ -699,7 +712,7 @@ function Chart({ office, head, now }: { office: Office; head: Office; now: Date 
             <span className={open ? "text-forest" : "text-ink-faint"}>
               {open ? "at the desk" : "closed"}
             </span>
-            <span className="font-medium tracking-[0.14em] text-ink-faint/80">
+            <span className="font-medium tracking-[0.14em] text-ink-soft">
               {office.opens}:00-{office.closes}:00 local
             </span>
           </p>
@@ -738,7 +751,7 @@ function Chart({ office, head, now }: { office: Office; head: Office; now: Date 
             ) : (
               <>
                 {km.toLocaleString("en-AU")} km from {head.city}
-                <span className="mx-2 text-brown/35">/</span>
+                <span className="mx-2 text-brown/55">/</span>
                 bearing {Math.round(heading)}
                 {"°"}
               </>
@@ -777,10 +790,10 @@ function DeskRow({
       aria-label={`${office.city} - ${office.lines.join(", ")} - opens in Google Maps`}
       onMouseMove={lean}
       onMouseLeave={level}
-      className={`group relative flex items-center gap-3 overflow-hidden rounded-xl border py-3 pl-4 pr-3.5 outline-none [--lift:0px] [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-8deg))_rotateY(calc(var(--tx,0)*10deg))_translateZ(var(--lift))] [transition:transform_.45s_ease-out,box-shadow_.45s_ease,background-color_.4s,border-color_.4s] hover:[--lift:22px] focus-visible:[--lift:22px] xl:py-3.5 xl:pl-5 ${
+      className={`group relative flex items-center gap-3 overflow-hidden rounded-xl border py-3 pl-4 pr-3.5 outline-none [--lift:0px] [--liftinv:1] [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-7deg))_rotateY(calc(var(--tx,0)*8deg))_translateZ(var(--lift))_scale(var(--liftinv))] [transition:transform_.45s_ease-out,box-shadow_.45s_ease,background-color_.4s,border-color_.4s] hover:[--lift:22px] hover:[--liftinv:0.97250] focus-visible:[--lift:22px] focus-visible:[--liftinv:0.97250] xl:py-3.5 xl:pl-5 ${
         active
           ? "border-brown/30 bg-[#fffdf8] shadow-[0_24px_40px_-26px_rgba(58,44,24,0.6)]"
-          : "border-brown/12 bg-cream/60 shadow-[0_10px_20px_-18px_rgba(58,44,24,0.55)] hover:border-brown/25 hover:bg-[#fffdf8]"
+          : "border-brown/20 bg-[#fbf8f1] shadow-[0_10px_20px_-18px_rgba(58,44,24,0.55)] hover:border-brown/25 hover:bg-[#fffdf8]"
       }`}
     >
       {/* the edge that lights up beside the desk you are pointing at */}
@@ -889,11 +902,11 @@ export default function Contact() {
           >
             <p className="text-[0.62rem] font-bold uppercase tracking-[0.32em] text-brown">
               {contactPage.eyebrow}
-              <span className="mx-3 text-brown/35">/</span>
+              <span className="mx-3 text-brown/55">/</span>
               <span className="text-ink-soft">
                 Melbourne <span className="tabular-nums text-ink">{melbourne.time}</span>
               </span>
-              <span className="mx-3 text-brown/35">/</span>
+              <span className="mx-3 text-brown/55">/</span>
               <span className={melbourne.open ? "text-forest" : "text-ink-faint"}>
                 {melbourne.open ? "at the desk" : "read first thing"}
               </span>
@@ -1143,7 +1156,7 @@ export default function Contact() {
               <p className="mt-4 font-heading text-[clamp(1.8rem,3.3vw,3.3rem)] font-semibold leading-[1.08] tracking-tight text-ink">
                 Twelve desks, eight time zones.
               </p>
-              <p className="mt-4 text-base leading-relaxed text-ink/75 xl:text-[1.1rem]">
+              <p className="mt-4 text-base leading-relaxed text-ink/80 xl:text-[1.1rem]">
                 Five across Australia and seven more from Toronto to Hong Kong,
                 each listed west to east by its own clock. Point at a desk to
                 swing the chart onto it; open it to land on the map.
@@ -1153,7 +1166,7 @@ export default function Contact() {
             {/* the live count, which is the reason for listing them at all */}
             <p
               aria-live="polite"
-              className="flex shrink-0 items-center gap-3 self-start rounded-full border border-brown/15 bg-cream/70 px-5 py-2.5 lg:self-auto"
+              className="flex shrink-0 items-center gap-3 self-start rounded-full border border-brown/22 bg-[#fffdf8] px-5 py-2.5 shadow-soft-sm lg:self-auto"
             >
               <span
                 className={`h-1.5 w-1.5 shrink-0 rounded-full ${

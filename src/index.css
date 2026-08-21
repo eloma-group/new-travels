@@ -121,8 +121,10 @@
     font-family: var(--font-sans);
     line-height: 1.5;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Subpixel, not greyscale: greyscale antialiasing thins every stroke,
+       which is what made the small type across the site read soft. */
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
     text-rendering: optimizeLegibility;
   }
   h1,
@@ -132,6 +134,14 @@
   h5,
   h6 {
     font-family: var(--font-heading);
+  }
+
+  /* Every photograph on the site is graded the same way: a little more colour
+     and a little more separation, so the images read glossy rather than flat.
+     Anything that sets its own `filter` (the hover grades) repeats these
+     numbers as its resting value, so nothing jumps when the grade changes. */
+  img {
+    filter: saturate(1.08) contrast(1.04) brightness(1.02);
   }
   :focus-visible {
     outline: 2px solid var(--color-gold-deep);
@@ -155,21 +165,72 @@
 /* ============================================================
    Custom utilities Tailwind can't express directly
    ============================================================ */
-/* Light, transparent frosted glass (reference look) */
+/* Clear glass, not frosted.
+
+   A `backdrop-filter: blur()` smears whatever is behind the panel AND hands
+   the panel its own composited layer, so the type sitting on it is rasterised
+   separately and rides on a blurred plate. Both halves of that read as "out of
+   focus". So the frosting is gone: what makes these read as glass now is a
+   raked specular gradient, a lit top edge and a bright rim - all of which are
+   painted, all of which stay sharp at any zoom. A `saturate` on the backdrop
+   is kept, because saturation alone costs no sharpness and keeps the colour
+   underneath alive. */
 @utility glass {
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  background:
+    linear-gradient(
+      142deg,
+      rgba(255, 255, 255, 0.58) 0%,
+      rgba(255, 255, 255, 0.34) 34%,
+      rgba(255, 255, 255, 0.22) 62%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
+  backdrop-filter: saturate(155%) brightness(106%);
+  -webkit-backdrop-filter: saturate(155%) brightness(106%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.28);
 }
 
 @utility glass-panel {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.9) 38%,
+      rgba(252, 249, 243, 0.88) 72%,
+      rgba(248, 243, 234, 0.92) 100%
+    );
+  backdrop-filter: saturate(150%) brightness(104%);
+  -webkit-backdrop-filter: saturate(150%) brightness(104%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.55);
+}
+
+/* The same polished glass, cut from the dark end of the range.
+
+   White type needs something behind it wherever it lands, and a photograph is
+   not something: half of these pills sit on a bleached sky and half on a dark
+   interior. Frosting used to paper over that; without it, the plate has to
+   carry its own contrast. So this one is tinted rather than blurred - a dark,
+   glossy slab with a lit top edge and a bright rim, which reads as cut glass
+   on any photograph and keeps every glyph on it perfectly sharp. */
+@utility glass-dark {
+  background:
+    linear-gradient(
+      140deg,
+      rgba(28, 21, 17, 0.62) 0%,
+      rgba(28, 21, 17, 0.5) 42%,
+      rgba(28, 21, 17, 0.58) 100%
+    );
+  backdrop-filter: saturate(150%);
+  -webkit-backdrop-filter: saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.28);
 }
 
 /* Nameplate - a solid, polished plate under the Wander Index and Invitation
@@ -178,7 +239,7 @@
    a brown haze. A plate that carries a name has to be opaque: the bevel and
    the drop shadow do the "cut glass" work, the surface itself stays clean. */
 @utility crystal {
-  background: linear-gradient(170deg, #ffffff 0%, #fefcf8 44%, #f6f1e8 100%);
+  background: linear-gradient(170deg, #ffffff 0%, #fffdfa 42%, #f9f5ee 100%);
   border: 1px solid rgba(255, 255, 255, 0.92);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 1),
@@ -189,10 +250,10 @@
 
 /* Engraved brass nameplate - warm metal with a thin top highlight (Wander Index) */
 @utility brass {
-  background: linear-gradient(180deg, #a07d54 0%, #7a5c3e 46%, #5b4632 100%);
+  background: linear-gradient(180deg, #b98f60 0%, #8a684a 46%, #634c36 100%);
   border: 1px solid rgba(91, 70, 50, 0.9);
   box-shadow:
-    inset 0 1px 0 0 rgba(255, 244, 228, 0.35),
+    inset 0 1px 0 0 rgba(255, 246, 232, 0.55),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.22),
     0 18px 34px -18px rgba(58, 44, 24, 0.75);
 }
@@ -222,21 +283,20 @@
 }
 
 /* Premium one-by-one gallery reveal: unveils downward while rising + focusing */
+/* The card unveils downward while it rises. It used to start behind a 10px
+   blur that resolved at 55%, which meant the first half of every reveal was
+   an out-of-focus photograph - the clip-path already does the unveiling, so
+   the blur was only ever costing sharpness. */
 @keyframes moment-in {
   0% {
     opacity: 0;
-    transform: translateY(64px) scale(0.9);
+    transform: translateY(64px) scale(0.94);
     clip-path: inset(0 0 100% 0 round 26px);
-    filter: blur(10px);
-  }
-  55% {
-    filter: blur(0);
   }
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
     clip-path: inset(0 0 0 0 round 26px);
-    filter: blur(0);
   }
 }
 

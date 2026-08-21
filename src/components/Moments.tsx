@@ -73,17 +73,17 @@ export default function Moments() {
       {/* grab handle - signals the section lifts up over the hero */}
       <span
         aria-hidden="true"
-        className="absolute left-1/2 top-4 h-1.5 w-12 -translate-x-1/2 rounded-full bg-ink/12"
+        className="absolute left-1/2 top-4 h-1.5 w-12 -translate-x-1/2 rounded-full bg-ink/20"
       />
       {/* premium header */}
       <div className="shell relative flex flex-col items-center text-center">
         {/* warm glow behind the heading */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-8 left-1/2 -z-0 h-72 w-[min(90vw,44rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(122,92,62,0.18),transparent_68%)] blur-2xl"
+          className="pointer-events-none absolute -top-8 left-1/2 -z-0 h-72 w-[min(90vw,44rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(122,92,62,0.2),rgba(122,92,62,0.06)_46%,transparent_72%)]"
         />
 
-        <span className="relative inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white/80 py-1.5 pl-2 pr-4 text-sm font-medium text-ink shadow-soft-sm backdrop-blur-sm">
+        <span className="relative inline-flex items-center gap-2 rounded-full border border-white bg-white py-1.5 pl-2 pr-4 text-sm font-semibold text-ink shadow-soft-sm ring-1 ring-brown/12">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-brown-soft to-brown-deep text-white">
             <Sparkle className="h-3.5 w-3.5" />
           </span>
@@ -119,7 +119,7 @@ export default function Moments() {
               style={{ marginTop: slot.offset, ...reveal(i) }}
             >
               <div className={`${heights[slot.h]} overflow-hidden rounded-[26px] shadow-soft-md`}>
-                <img src={src} alt={alt} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                <img src={src} alt={alt} className="h-full w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-500 hover:scale-105 hover:brightness-[1.09] hover:saturate-[1.18]" />
               </div>
               <div className="flex items-start justify-between gap-3 px-1">
                 <div>
@@ -142,7 +142,7 @@ export default function Moments() {
               className={`${heights[slot.h]} w-40 shrink-0 overflow-hidden rounded-[26px] shadow-soft-md sm:w-52 lg:w-auto lg:min-w-0 lg:flex-1 lg:shrink`}
               style={{ marginTop: slot.offset, ...reveal(i) }}
             >
-              <img src={src} alt={alt} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+              <img src={src} alt={alt} className="h-full w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-500 hover:scale-105 hover:brightness-[1.09] hover:saturate-[1.18]" />
             </div>
           );
         })}
@@ -154,7 +154,7 @@ export default function Moments() {
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all duration-500 ${
-              i === set ? "w-7 bg-brown-deep" : "w-1.5 bg-ink/15"
+              i === set ? "w-7 bg-brown-deep" : "w-1.5 bg-ink/25"
             }`}
           />
         ))}

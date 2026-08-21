@@ -44,9 +44,11 @@ export default function Hero() {
           />
         ))}
 
-        {/* legibility overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/10 to-black/55" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {/* legibility overlays - held as light as the type will allow, so the
+            slide stays a photograph rather than a dimmed one. The headline
+            carries its own shadow, which is what buys the extra light here. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/[0.04] to-black/44" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-transparent to-transparent" />
 
         {/* floating nav */}
         <Navbar />
@@ -57,7 +59,7 @@ export default function Hero() {
           style={swap}
           className="relative z-10 flex flex-col items-center px-5 pt-28 text-center sm:pt-32 lg:pt-40"
         >
-          <span className="glass rounded-full px-4 py-1.5 text-xs font-medium text-white sm:text-sm">
+          <span className="glass-dark rounded-full px-4 py-1.5 text-xs font-semibold text-white sm:text-sm">
             {exp.eyebrow}
           </span>
 
@@ -127,19 +129,19 @@ export default function Hero() {
                   className={`group relative h-52 shrink-0 overflow-hidden rounded-[24px] text-left shadow-soft-md ring-1 transition-all duration-500 hover:-translate-y-1 sm:h-60 ${
                     on
                       ? "w-60 ring-2 ring-gold sm:w-64"
-                      : "w-32 ring-white/25 sm:w-36"
+                      : "w-32 ring-white/45 sm:w-36"
                   }`}
                 >
                   <img
                     src={e.thumb}
                     alt={e.card}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover saturate-[1.08] contrast-[1.04] brightness-[1.02] transition-[transform,filter] duration-500 group-hover:scale-105 group-hover:brightness-[1.09] group-hover:saturate-[1.16]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/[0.04] to-transparent" />
                   {/* auto-advance timing bar (active card only) */}
                   {on && (
                     <span
-                      className="absolute inset-x-3 top-3 z-10 h-[3px] origin-left rounded-full bg-gold/90"
+                      className="absolute inset-x-3 top-3 z-10 h-[3px] origin-left rounded-full bg-gold"
                       style={{
                         animation: `hero-progress ${SLIDE_MS}ms linear both`,
                         animationPlayState: paused ? "paused" : "running",
@@ -147,15 +149,15 @@ export default function Hero() {
                     />
                   )}
                   {/* glass caption plate */}
-                  <div className="glass absolute inset-x-3 bottom-3 rounded-2xl px-3 py-2.5 text-white">
+                  <div className="glass-dark absolute inset-x-3 bottom-3 rounded-2xl px-3 py-2.5 text-white">
                     <h3 className="text-sm font-bold leading-tight">{e.card}</h3>
                     {on && (
-                      <p className="mt-1 line-clamp-2 text-xs leading-snug text-white/85">
+                      <p className="mt-1 line-clamp-2 text-xs leading-snug text-white/95">
                         {e.copy}
                       </p>
                     )}
                     {!on && (
-                      <p className="mt-0.5 text-[0.7rem] text-white/70">{e.place}</p>
+                      <p className="mt-0.5 text-[0.7rem] text-white/85">{e.place}</p>
                     )}
                   </div>
                 </button>

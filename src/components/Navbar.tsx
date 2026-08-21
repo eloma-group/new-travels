@@ -45,15 +45,15 @@ export default function Navbar({ variant = "overlay" }: { variant?: Variant }) {
         aria-label="Primary"
         className={`pointer-events-auto flex w-full max-w-4xl animate-fade-up 2xl:max-w-5xl min-[1920px]:max-w-6xl items-center justify-between gap-4 rounded-full py-2 pl-3 pr-3 shadow-soft-md sm:pl-5 ${
           solid
-            ? "glass-panel text-ink ring-1 ring-brown/12"
-            : "glass text-white ring-1 ring-white/20"
+            ? "glass-panel text-ink ring-1 ring-brown/20"
+            : "glass text-white ring-1 ring-white/35 [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]"
         }`}
       >
         {/* Brand */}
         <Link to="/" aria-label={`${brand} home`} className="flex items-center gap-2.5">
           <span
             className={`grid h-9 w-9 place-items-center rounded-full ring-1 ${
-              solid ? "bg-brown/10 ring-brown/25" : "bg-white/15 ring-white/40"
+              solid ? "bg-brown/12 ring-brown/30" : "bg-white/25 ring-white/60"
             }`}
           >
             <span
@@ -78,7 +78,7 @@ export default function Navbar({ variant = "overlay" }: { variant?: Variant }) {
                     : "bg-white text-ink"
                   : solid
                   ? "text-ink-soft hover:text-ink"
-                  : "text-white/85 hover:text-white"
+                  : "text-white/90 hover:text-white"
               }`,
               () => setActive(n.label)
             )
@@ -89,7 +89,7 @@ export default function Navbar({ variant = "overlay" }: { variant?: Variant }) {
         <Link
           to="/contact"
           className={`group hidden items-center gap-2 rounded-full py-1.5 pl-4 pr-1.5 text-sm font-semibold transition-colors sm:flex ${
-            solid ? "bg-brown text-cream hover:bg-brown-deep" : "bg-white/95 text-ink hover:bg-white"
+            solid ? "bg-brown text-cream hover:bg-brown-deep" : "bg-white text-ink [text-shadow:none] hover:bg-white"
           }`}
         >
           Book now
@@ -139,7 +139,7 @@ export default function Navbar({ variant = "overlay" }: { variant?: Variant }) {
             item(
               n.href,
               n.label,
-              "block rounded-2xl px-4 py-3 font-medium text-ink-soft transition-colors hover:bg-white/60 hover:text-ink",
+              "block rounded-2xl px-4 py-3 font-medium text-ink-soft transition-colors hover:bg-white hover:text-ink",
               () => {
                 setActive(n.label);
                 setOpen(false);

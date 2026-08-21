@@ -135,14 +135,14 @@ function Chip({
   children: React.ReactNode;
 }) {
   const cls =
-    "group/chip flex w-full items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-left transition-all duration-300 ease-lux hover:-translate-y-1 hover:border-brown-soft/55 hover:bg-brown-soft/15 hover:shadow-[0_14px_30px_-14px_rgba(160,125,84,0.55)]";
+    "group/chip flex w-full items-center gap-2.5 rounded-xl border border-white/22 bg-white/[0.08] px-3.5 py-2.5 text-left transition-all duration-300 ease-lux hover:-translate-y-1 hover:border-brown-soft/55 hover:bg-brown-soft/15 hover:shadow-[0_14px_30px_-14px_rgba(160,125,84,0.55)]";
   const inner = (
     <>
       <span className="shrink-0 text-[0.6rem] font-bold uppercase tracking-[0.16em] text-brown-soft">
         {label}
       </span>
-      <span className="h-3 w-px shrink-0 bg-white/15" />
-      <span className="text-[0.8rem] font-medium leading-snug text-cream/75 transition-colors group-hover/chip:text-cream">
+      <span className="h-3 w-px shrink-0 bg-white/28" />
+      <span className="text-[0.8rem] font-medium leading-snug text-cream/90 transition-colors group-hover/chip:text-cream">
         {children}
       </span>
     </>
@@ -185,7 +185,7 @@ function HubClock({
       <p className="mt-1.5 font-heading text-lg font-semibold text-cream sm:text-xl">
         {city}
       </p>
-      <p className="mt-0.5 text-xs tabular-nums text-cream/45">{time} local</p>
+      <p className="mt-0.5 text-xs tabular-nums text-cream/80">{time} local</p>
     </div>
   );
 }
@@ -262,10 +262,10 @@ export default function Footer() {
 
       {/* ---------- ambient warmth + star field ---------- */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] opacity-70"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[36rem]"
         style={{
           background:
-            "radial-gradient(60% 55% at 50% 0%, rgba(160,125,84,0.22) 0%, transparent 70%)",
+            "radial-gradient(60% 55% at 50% 0%, rgba(160,125,84,0.26) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
@@ -305,12 +305,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="max-w-md text-[0.95rem] leading-relaxed text-cream/55">
+            <p className="max-w-md text-[0.95rem] leading-relaxed text-cream/95">
               {footer.ctaCopy}
             </p>
 
             <form onSubmit={submit} className="mt-6 max-w-md">
-              <div className="flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] p-1.5 pl-5 transition-colors focus-within:border-brown-soft/60">
+              <div className="flex items-center gap-2 rounded-full border border-white/25 bg-white/[0.09] p-1.5 pl-5 transition-colors focus-within:border-brown-soft/60">
                 <input
                   type="email"
                   required
@@ -318,7 +318,7 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={footer.ctaPlaceholder}
                   aria-label="Email address"
-                  className="min-w-0 flex-1 bg-transparent py-2.5 text-sm text-cream outline-none placeholder:text-cream/35"
+                  className="min-w-0 flex-1 bg-transparent py-2.5 text-sm text-cream outline-none placeholder:text-cream/60"
                 />
                 <button
                   type="submit"
@@ -329,7 +329,7 @@ export default function Footer() {
                 </button>
               </div>
               <p
-                className="mt-3 text-xs text-cream/35"
+                className="mt-3 text-xs text-cream/70"
                 role={joined ? "status" : undefined}
               >
                 {joined
@@ -344,7 +344,7 @@ export default function Footer() {
         <div className="mt-16 sm:mt-20">
           <div ref={routeRef} className="relative h-16 sm:h-24">
             <svg
-              className="absolute inset-0 h-full w-full overflow-visible text-brown-soft/45"
+              className="absolute inset-0 h-full w-full overflow-visible text-brown-soft/70"
               viewBox={`0 0 ${w} ${h}`}
               aria-hidden="true"
             >
@@ -394,13 +394,13 @@ export default function Footer() {
               aria-label={`${brand} home`}
               className="inline-flex items-center gap-2.5"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 ring-1 ring-white/25">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-white/16 ring-1 ring-white/40">
                 <span className="h-3.5 w-3.5 rounded-full bg-gradient-to-br from-brown-soft to-brown-deep" />
               </span>
               <span className="font-heading text-xl font-bold tracking-tight">{brand}</span>
             </a>
 
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/45">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/80">
               {footer.tagline}
             </p>
 
@@ -408,14 +408,14 @@ export default function Footer() {
             <div className="mt-6 flex flex-col gap-3">
               <a
                 href={footer.phone.href}
-                className="inline-flex w-fit items-center gap-2.5 text-sm text-cream/60 transition-colors hover:text-brown-soft"
+                className="inline-flex w-fit items-center gap-2.5 text-sm text-cream/95 transition-colors hover:text-brown-soft"
               >
                 <Phone className="h-4 w-4 shrink-0 text-brown-soft" />
                 {footer.phone.label}
               </a>
               <a
                 href={footer.email.href}
-                className="inline-flex w-fit items-center gap-2.5 text-sm text-cream/60 transition-colors hover:text-brown-soft"
+                className="inline-flex w-fit items-center gap-2.5 text-sm text-cream/95 transition-colors hover:text-brown-soft"
               >
                 <Mail className="h-4 w-4 shrink-0 text-brown-soft" />
                 {footer.email.label}
@@ -428,10 +428,10 @@ export default function Footer() {
                 href={footer.address.maps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/chip flex items-center gap-2.5 rounded-xl border border-brown-soft/25 bg-brown-soft/10 px-3.5 py-2.5 transition-all duration-300 ease-lux hover:-translate-y-1 hover:border-brown-soft/60 hover:bg-brown-soft/20 hover:shadow-[0_14px_30px_-14px_rgba(160,125,84,0.55)]"
+                className="group/chip flex items-center gap-2.5 rounded-xl border border-brown-soft/40 bg-brown-soft/16 px-3.5 py-2.5 transition-all duration-300 ease-lux hover:-translate-y-1 hover:border-brown-soft/60 hover:bg-brown-soft/20 hover:shadow-[0_14px_30px_-14px_rgba(160,125,84,0.55)]"
               >
                 <Pin className="h-4 w-4 shrink-0 text-brown-soft" />
-                <span className="text-[0.8rem] font-medium leading-snug text-cream/85">
+                <span className="text-[0.8rem] font-medium leading-snug text-cream/95">
                   {footer.address.lines[0]}
                   <br />
                   {footer.address.lines[1]}
@@ -476,7 +476,7 @@ export default function Footer() {
               <ul className="flex flex-col gap-3">
                 {col.links.map((item) => {
                   const cls =
-                    "inline-block text-[0.83rem] text-cream/45 transition-all duration-200 hover:translate-x-1 hover:text-cream";
+                    "inline-block text-[0.83rem] text-cream/80 transition-all duration-200 hover:translate-x-1 hover:text-cream";
                   return (
                     <li key={item.label}>
                       {item.href.startsWith("/") ? (
@@ -504,7 +504,7 @@ export default function Footer() {
 
         {/* ================= protected by - EG Digital shield ================= */}
         <div className="mt-14 flex items-end justify-center sm:justify-end">
-          <span className="pb-4 -mr-3.5 text-[0.69rem] font-bold uppercase tracking-[0.14em] text-cream/40">
+          <span className="pb-4 -mr-3.5 text-[0.69rem] font-bold uppercase tracking-[0.14em] text-cream/90">
             Protected by
           </span>
           <a
@@ -512,7 +512,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="EG Digital"
-            className="block leading-none opacity-90 transition-all duration-300 ease-lux hover:scale-105 hover:opacity-100"
+            className="block leading-none transition-transform duration-300 ease-lux hover:scale-105"
           >
             <img
               src="/images/eg-digital-shield.gif"
@@ -527,13 +527,13 @@ export default function Footer() {
         </div>
 
         {/* ================= divider with the group's centre dot ================= */}
-        <div className="relative mt-4 h-px bg-white/10">
+        <div className="relative mt-4 h-px bg-white/18">
           <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brown-soft shadow-[0_0_12px_rgba(160,125,84,0.7)]" />
         </div>
 
         {/* ================= bottom bar ================= */}
         <div className="relative flex flex-col items-center gap-4 pb-9 pt-6 text-center sm:flex-row sm:justify-between sm:text-left">
-          <p className="text-xs text-cream/30">
+          <p className="text-xs text-cream/65">
             © {now.getFullYear()} {footer.company}. All rights reserved.
           </p>
 
@@ -542,19 +542,19 @@ export default function Footer() {
               <a
                 key={l.label}
                 href={l.href}
-                className="text-xs text-cream/30 transition-colors hover:text-brown-soft"
+                className="text-xs text-cream/65 transition-colors hover:text-brown-soft"
               >
                 {l.label}
               </a>
             ))}
-            <span className="hidden text-xs text-cream/12 sm:inline">|</span>
-            <span className="inline-flex items-center gap-1.5 text-xs text-cream/30">
+            <span className="hidden text-xs text-cream/35 sm:inline">|</span>
+            <span className="inline-flex items-center gap-1.5 text-xs text-cream/65">
               Developed by
               <a
                 href="https://egdigital.com.au/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-brown-soft transition-opacity hover:opacity-80"
+                className="font-semibold text-brown-soft transition-colors hover:text-gold-soft"
               >
                 EG Digital
               </a>
@@ -568,7 +568,7 @@ export default function Footer() {
         className="pointer-events-none absolute inset-x-0 bottom-0 select-none overflow-hidden"
         aria-hidden="true"
       >
-        <span className="block translate-y-[0.3em] text-center font-heading text-[clamp(4rem,17vw,15rem)] font-black uppercase leading-none tracking-tight text-white/[0.035]">
+        <span className="block translate-y-[0.3em] text-center font-heading text-[clamp(4rem,17vw,15rem)] font-black uppercase leading-none tracking-tight text-white/[0.07]">
           {brand}
         </span>
       </div>
