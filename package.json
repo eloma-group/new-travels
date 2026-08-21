@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
+    "build": "node scripts/check-finish.mjs && tsc -b && vite build",
+    "lint": "oxlint && node scripts/check-finish.mjs",
     "build:cities": "node scripts/build-cities.mjs",
+    "check:finish": "node scripts/check-finish.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
