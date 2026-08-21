@@ -25,13 +25,32 @@ function useCountUp(target: number, run: boolean, dur = 1300) {
   return val;
 }
 
-// per-portal 3D placement in the tilting deck: symmetric wrap-around toward centre
+/* Per-portal placement in the tilting deck.
+
+   `translateZ` inside a perspective does two things at once: it moves the
+   portal forward, and it magnifies it by P / (P - Z). That magnification is
+   what was making the nameplates blurry - the browser rasterises the layer at
+   its own size and then the perspective blows it up by a few percent, so every
+   glyph is resampled. Pairing each step with its exact inverse scale keeps the
+   depth and the parallax while rendering the portal at 1:1.
+
+   The size difference between the centre portal and its flanks is deliberate
+   and comes from their width classes below, not from this magnification. */
+const PERSPECTIVE = 1600;
+
+const at = (z: number, yaw = 0) => ({
+  transform: `translateZ(${z}px) ${yaw ? `rotateY(${yaw}deg) ` : ""}scale(${(
+    1 -
+    z / PERSPECTIVE
+  ).toFixed(5)})`,
+});
+
 const depth: React.CSSProperties[] = [
-  { transform: "translateZ(0px) rotateY(16deg)" }, //   far-left - furthest, most yawed
-  { transform: "translateZ(30px) rotateY(9deg)" }, //   left    - yawed toward centre
-  { transform: "translateZ(74px)" }, //                 center  - pushed forward (feature)
-  { transform: "translateZ(30px) rotateY(-9deg)" }, //  right   - yawed toward centre
-  { transform: "translateZ(0px) rotateY(-16deg)" }, //  far-right - furthest, most yawed
+  at(0, 16), //    far-left  - furthest, most yawed
+  at(30, 9), //    left      - yawed toward centre
+  at(74), //       centre    - pushed forward (feature)
+  at(30, -9), //   right     - yawed toward centre
+  at(0, -16), //   far-right - furthest, most yawed
 ];
 
 export default function Destination() {
@@ -243,18 +262,18 @@ export default function Destination() {
           className="mt-16 [perspective:1600px] sm:mt-20"
         >
           <div
-            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] will-change-transform sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
+            className="relative flex flex-col items-center justify-center gap-12 pt-20 [transform-style:preserve-3d] [transform:rotateX(calc(var(--my,0)*-5deg))_rotateY(calc(var(--mx,0)*9deg))] [transition:transform_.4s_ease-out] sm:flex-row sm:items-end sm:gap-[clamp(0.5rem,2vw,1.5rem)] sm:pt-28 xl:gap-[clamp(0.75rem,1.8vw,3rem)]"
           >
             {wander.plates.map((p, i) => {
               const feature = i === 2;
               const edge = i === 0 || i === wander.plates.length - 1;
               return (
-                <div key={p.key} style={depth[i]} className={`will-change-transform ${edge ? "hidden xl:block" : ""}`}>
+                <div key={p.key} style={depth[i]} className={edge ? "hidden xl:block" : undefined}>
                   <div style={deckIn(i)}>
                     <a
                       href="#packages"
                       aria-label={`Explore ${p.name}, ${p.region}`}
-                      className="group relative block will-change-transform transition-transform duration-500 ease-out hover:-translate-y-3 focus-visible:-translate-y-3"
+                      className="group relative block transition-transform duration-500 ease-out hover:-translate-y-3 focus-visible:-translate-y-3"
                     >
                       {/* warm ground-glow that blooms under the portal on hover */}
                       <span className="pointer-events-none absolute inset-x-6 bottom-1 -z-10 h-14 rounded-full bg-brown/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
@@ -298,10 +317,10 @@ export default function Destination() {
                       {/* cut-crystal nameplate */}
                       <div className="crystal relative z-10 mx-auto -mt-5 w-[86%] overflow-hidden rounded-xl px-4 py-2 text-center transition-[transform,box-shadow] duration-500 group-hover:-translate-y-1 group-hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,1),inset_0_0_16px_0_rgba(255,255,255,0.8),0_16px_30px_-14px_rgba(58,44,24,0.55)]">
                         {/* bevelled top facet - the specular line that sells the glass */}
-                        <span className="pointer-events-none absolute inset-x-3 top-px h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+                        <span className="pointer-events-none absolute inset-x-3 top-px h-px bg-gradient-to-r from-transparent via-brown/20 to-transparent" />
                         {/* raked light sweeping across the facet on hover */}
-                        <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
-                        <p className="relative text-sm font-semibold leading-tight text-brown-deep [text-shadow:0_1px_0_rgba(255,255,255,0.9)]">
+                        <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.10),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover:left-[125%] group-hover:opacity-100" />
+                        <p className="relative text-sm font-semibold leading-tight text-ink">
                           {p.name}
                         </p>
                         <p className="relative mt-0.5 text-[0.6rem] font-medium uppercase tracking-[0.22em] text-ink/60">

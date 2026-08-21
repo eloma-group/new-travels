@@ -1,5 +1,6 @@
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
+import Packages from "./pages/Packages";
 import { useRoute } from "./router";
 
 export default function App() {
@@ -8,5 +9,7 @@ export default function App() {
   // Trailing slashes and case shouldn't decide whether a page exists.
   const path = route.replace(/\/+$/, "").toLowerCase() || "/";
 
-  return path === "/contact" ? <Contact /> : <Home />;
+  if (path === "/contact") return <Contact />;
+  if (path === "/packages") return <Packages />;
+  return <Home />;
 }

@@ -166,7 +166,12 @@ export default function Invitation() {
                 <a
                   href="#packages"
                   aria-label={`Explore ${pl.name}`}
-                  className="group/plate block w-[clamp(7rem,10.5vw,11rem)] [transform:rotate(var(--r))_translate3d(calc(var(--px,0)*var(--drift)),calc(var(--py,0)*10px),0)] [transition:transform_.6s_ease-out] hover:[--r:0deg]"
+                  /* 2D translate, not translate3d: a 3D transform hands the
+                     plate its own composited layer, which Chrome rasterises
+                     once at 1x and then rotates - so the photograph and the
+                     name under it come out bilinear-filtered. Kept flat, the
+                     rotation happens at paint time and stays sharp. */
+                  className="group/plate block w-[clamp(7rem,10.5vw,11rem)] [transform:rotate(var(--r))_translate(calc(var(--px,0)*var(--drift)),calc(var(--py,0)*10px))] [transition:transform_.6s_ease-out] hover:[--r:0deg]"
                   style={
                     {
                       "--r": left ? "-5deg" : "5deg",
@@ -188,10 +193,10 @@ export default function Invitation() {
                   {/* cut-crystal nameplate */}
                   <div className="crystal relative z-10 mx-auto -mt-3 w-[86%] overflow-hidden rounded-lg px-2 py-1.5 text-center transition-transform duration-500 group-hover/plate:-translate-y-0.5">
                     {/* bevelled top facet - the specular line that sells the glass */}
-                    <span className="pointer-events-none absolute inset-x-2 top-px h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+                    <span className="pointer-events-none absolute inset-x-2 top-px h-px bg-gradient-to-r from-transparent via-brown/20 to-transparent" />
                     {/* raked light sweeping across the facet on hover */}
-                    <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover/plate:left-[125%] group-hover/plate:opacity-100" />
-                    <p className="relative text-[0.72rem] font-semibold leading-tight text-brown-deep [text-shadow:0_1px_0_rgba(255,255,255,0.9)]">
+                    <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/4 -rotate-[18deg] bg-[linear-gradient(90deg,transparent,rgba(122,92,62,0.10),transparent)] opacity-0 transition-[left,opacity] duration-[900ms] ease-out group-hover/plate:left-[125%] group-hover/plate:opacity-100" />
+                    <p className="relative text-[0.72rem] font-semibold leading-tight text-ink">
                       {pl.name}
                     </p>
                     <p className="relative mt-0.5 text-[0.52rem] font-medium uppercase tracking-[0.18em] text-ink/60">

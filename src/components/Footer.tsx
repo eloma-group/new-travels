@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Arrow, Mail, Phone, Pin } from "../icons";
 import { brand, footer } from "../data";
 import Link from "./Link";
@@ -7,13 +7,6 @@ import Link from "./Link";
    Brand glyphs - kept local; `icons.tsx` holds the site's stroke set.
    ------------------------------------------------------------------ */
 type G = { className?: string };
-
-/* Solid silhouette - the site's stroke Plane loses its shape at badge size. */
-const PlaneMark = ({ className }: G) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M21.5 15.6v-1.9l-8.2-5.1V3.1a1.4 1.4 0 0 0-2.8 0v5.5l-8.2 5.1v1.9l8.2-2.6v5.3l-2.3 1.7v1.4l3.7-1 3.7 1v-1.4l-2.3-1.7V13l8.2 2.6Z" />
-  </svg>
-);
 
 const LinkedIn = ({ className }: G) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -78,6 +71,33 @@ const socials = [
   { Icon: TikTok, label: "TikTok", href: "#", bg: "#000000" },
   { Icon: Threads, label: "Threads", href: "#", bg: "#000000" },
 ];
+
+/* ------------------------------------------------------------------
+   The route divider.
+
+   The plane used to be an HTML badge stepped along by CSS keyframes:
+   eleven `left`/`top` stops, linearly interpolated. That is a polyline
+   pretending to be a curve, with the bank angle snapping between ten
+   fixed values - which is the vibration. It also animated layout
+   properties, so every frame cost a reflow.
+
+   Now it is what the Wander Index already does: an SVG silhouette on
+   `animateMotion`, following the drawn path itself. That needs the arc
+   to be measured rather than stretched - `preserveAspectRatio="none"`
+   would squash the aeroplane along with it - so the viewBox tracks the
+   divider's real size and the whole thing renders 1:1.
+   ------------------------------------------------------------------ */
+
+/* Top-down aeroplane, nose along +x so `rotate="auto"` aligns it to the arc. */
+const PLANE =
+  "M13,0 L3,-1 L-2,-10 L-4,-10 L-1,-1.2 L-8,-1 L-10,-4 L-11,-4 L-11,-0.6 L-12,0 L-11,0.6 L-11,4 L-10,4 L-8,1 L-1,1.2 L-4,10 L-2,10 L3,1 Z";
+
+/* The same arc the divider always had, held as fractions of its box. */
+const ARC = { x0: 0.005, y0: 0.958, cx1: 0.283, cx2: 0.717, cy: -0.042 };
+
+const reduced = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* Deterministic star field - no hydration surprises, no random reflow. */
 const STARS = Array.from({ length: 34 }, (_, i) => ({
@@ -178,6 +198,30 @@ export default function Footer() {
   const [now, setNow] = useState(() => new Date());
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
+  const [reduce] = useState(reduced);
+
+  // The divider's own pixel size, so the arc is drawn at 1:1.
+  const routeRef = useRef<HTMLDivElement>(null);
+  const [box, setBox] = useState({ w: 1200, h: 96 });
+
+  useEffect(() => {
+    const el = routeRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => {
+      const w = Math.round(e.contentRect.width);
+      const h = Math.round(e.contentRect.height);
+      // Integers only: sub-pixel noise would re-key the plane mid-flight.
+      setBox((b) => (b.w === w && b.h === h ? b : { w, h }));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const { w, h } = box;
+  const hub = { x0: ARC.x0 * w, y0: ARC.y0 * h, x1: (1 - ARC.x0) * w, y1: ARC.y0 * h };
+  const route = `M${hub.x0},${hub.y0} C${ARC.cx1 * w},${ARC.cy * h} ${ARC.cx2 * w},${
+    ARC.cy * h
+  } ${hub.x1},${hub.y1}`;
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30_000);
@@ -298,47 +342,41 @@ export default function Footer() {
 
         {/* ================= route divider: hub → plane → hub ================= */}
         <div className="mt-16 sm:mt-20">
-          <div className="relative h-16 sm:h-24">
+          <div ref={routeRef} className="relative h-16 sm:h-24">
             <svg
-              className="absolute inset-0 h-full w-full text-brown-soft/45"
-              viewBox="0 0 1200 96"
-              preserveAspectRatio="none"
+              className="absolute inset-0 h-full w-full overflow-visible text-brown-soft/45"
+              viewBox={`0 0 ${w} ${h}`}
               aria-hidden="true"
             >
               <path
-                d="M6 92C 340 -4, 860 -4, 1194 92"
+                id="footerRoute"
+                d={route}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="4"
                 strokeDasharray="2 10"
                 strokeLinecap="round"
-                vectorEffect="non-scaling-stroke"
                 style={{ animation: "route-flow 2.6s linear infinite" }}
               />
+              <circle cx={hub.x0} cy={hub.y0} r="4" className="fill-brown-soft" />
+              <circle cx={hub.x1} cy={hub.y1} r="4" className="fill-brown-soft" />
+
+              {/* the plane rides the arc hub -> hub, on the path itself */}
+              {!reduce && (
+                <g key={`${w}x${h}`} className="fill-white">
+                  <path d={PLANE} transform="scale(1)" />
+                  <animateMotion
+                    dur="11s"
+                    repeatCount="indefinite"
+                    rotate="auto"
+                    keyPoints="0;1"
+                    keyTimes="0;1"
+                  >
+                    <mpath href="#footerRoute" />
+                  </animateMotion>
+                </g>
+              )}
             </svg>
-            <span
-              className="absolute bottom-0 left-0 h-2 w-2 -translate-x-1/2 translate-y-1/2 rounded-full bg-brown-soft"
-              aria-hidden="true"
-            />
-            <span
-              className="absolute bottom-0 right-0 h-2 w-2 translate-x-1/2 translate-y-1/2 rounded-full bg-brown-soft"
-              aria-hidden="true"
-            />
-            {/* the plane rides the arc hub -> hub; base position is the apex so
-                reduced-motion leaves it resting at the top of the route */}
-            <span
-              className="absolute left-1/2 top-[20.8%] grid h-11 w-11 place-items-center rounded-full brass text-cream will-change-[left,top,transform] sm:h-12 sm:w-12"
-              style={{
-                // centring lives only in the keyframe transform - Tailwind v4's
-                // -translate-* utilities set the independent `translate` property,
-                // which would compose on top and lift the badge off the route
-                transform: "translate(-50%, -50%)",
-                animation: "footer-route-fly 11s linear infinite",
-              }}
-              aria-hidden="true"
-            >
-              <PlaneMark className="h-[18px] w-[18px] rotate-90" />
-            </span>
           </div>
 
           <div className="mt-7 flex items-start justify-between gap-4">
