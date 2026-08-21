@@ -529,11 +529,30 @@ const coords = (o: Office) =>
     2
   )}°${o.lon < 0 ? "W" : "E"}`;
 
+/* The chart panel leans inside its own perspective, and the reading floats
+   26px in front of the glass. That lift magnifies it by P / (P - Z), so the
+   text was being rendered at 1x and then blown up ~1.9% - the reason the whole
+   panel read soft. The inverse scale cancels the magnification exactly and
+   leaves the parallax intact. */
+const CHART_PERSPECTIVE = 1400;
+const CHART_LIFT = 26;
+const READING = {
+  transform: `translateZ(${CHART_LIFT}px) scale(${(
+    1 -
+    CHART_LIFT / CHART_PERSPECTIVE
+  ).toFixed(5)})`,
+};
+
 /* The chart itself. The rose is drawn once; only the needle moves. */
 function Rose({ heading }: { heading: number }) {
   return (
-    <svg viewBox="0 0 400 400" fill="none" className="h-full w-full text-brown">
-      <g opacity="0.32">
+    <svg
+      viewBox="0 0 400 400"
+      fill="none"
+      shapeRendering="geometricPrecision"
+      className="h-full w-full text-brown"
+    >
+      <g opacity="0.5">
         <circle cx="200" cy="200" r="196" stroke="currentColor" strokeWidth="1" />
         <circle cx="200" cy="200" r="152" stroke="currentColor" strokeWidth="1" />
         <circle
@@ -600,20 +619,57 @@ function Chart({ office, head, now }: { office: Office; head: Office; now: Date 
   const tag = "tag" in office ? office.tag : undefined;
 
   return (
-    <div onMouseMove={lean} onMouseLeave={level} className="group/chart [perspective:1400px]">
-      <div className="relative rounded-[1.75rem] bg-[#fffdf8] p-7 shadow-[0_40px_80px_-52px_rgba(58,44,24,0.5)] ring-1 ring-brown/12 [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-5deg))_rotateY(calc(var(--tx,0)*7deg))] [transition:transform_.5s_ease-out,box-shadow_.5s_ease] hover:shadow-[0_60px_100px_-56px_rgba(58,44,24,0.62)] sm:p-9 xl:p-11">
+    <div
+      onMouseMove={lean}
+      onMouseLeave={level}
+      className="group/chart"
+      style={{ perspective: `${CHART_PERSPECTIVE}px` }}
+    >
+      {/* Polished glass, not paper: a warm base so the specular streak has
+          something to read against, a lit top edge, and a white inner rim.
+          No overflow-hidden on this panel - it would flatten the 3D and take
+          the lean with it, so each layer carries its own radius instead. */}
+      <div
+        className="relative rounded-[1.75rem] p-7 shadow-[0_40px_80px_-52px_rgba(58,44,24,0.5),inset_0_1px_0_0_rgba(255,255,255,1)] ring-1 ring-brown/15 [transform-style:preserve-3d] [transform:rotateX(calc(var(--ty,0)*-5deg))_rotateY(calc(var(--tx,0)*7deg))] [transition:transform_.5s_ease-out,box-shadow_.5s_ease] hover:shadow-[0_60px_100px_-56px_rgba(58,44,24,0.62),inset_0_1px_0_0_rgba(255,255,255,1)] sm:p-9 xl:p-11"
+        style={{
+          background:
+            "linear-gradient(155deg, #ffffff 0%, #fffdf8 34%, #f8f2e7 74%, #f2ead9 100%)",
+        }}
+      >
         {/* the rose is parked on the panel itself; the reading floats in front
             of it, so the two planes part as the chart leans */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.75rem]"
         >
-          <div className="absolute -right-16 -top-14 h-[23rem] w-[23rem] opacity-[0.17] transition-opacity duration-500 group-hover/chart:opacity-[0.24] sm:-right-20 sm:h-[27rem] sm:w-[27rem] xl:-right-24 xl:h-[33rem] xl:w-[33rem]">
+          <div className="absolute -right-16 -top-14 h-[23rem] w-[23rem] opacity-[0.3] transition-opacity duration-500 group-hover/chart:opacity-[0.42] sm:-right-20 sm:h-[27rem] sm:w-[27rem] xl:-right-24 xl:h-[33rem] xl:w-[33rem]">
             <Rose heading={heading} />
           </div>
         </div>
 
-      <div className="relative [transform:translateZ(26px)]">
+        {/* a raked specular streak - a defined edge of light, not a haze */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[1.75rem]"
+          style={{
+            background:
+              "linear-gradient(118deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.45) 13%, rgba(255,255,255,0.08) 29%, transparent 46%)",
+          }}
+        />
+        {/* the ambient the glass picks up off its own bottom corner */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[1.75rem]"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 88% 108%, rgba(122,92,62,0.11), transparent 56%)",
+          }}
+        />
+        {/* bevel: a lit top edge and a white rim all the way round */}
+        <span className="pointer-events-none absolute inset-x-10 top-px h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+        <span className="pointer-events-none absolute inset-0 rounded-[1.75rem] ring-1 ring-inset ring-white/70" />
+
+      <div className="relative" style={READING}>
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-[0.58rem] font-bold uppercase tracking-[0.3em] text-brown-soft">
             {office.region}
