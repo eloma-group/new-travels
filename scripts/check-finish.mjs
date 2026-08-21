@@ -34,8 +34,8 @@ const strip = (text) =>
 
 const RULES = [
   {
-    test: /backdrop-blur|backdrop-filter\s*:[^;]*\bblur\s*\(/,
-    why: "Frosted glass. A backdrop blur smears what is behind the panel and hands the panel its own composited layer, so the type on it rides on a blurred plate. Use `glass`, `glass-panel` or `glass-dark` - they get their gloss from a raked specular gradient, a lit top edge and a bright rim, all of which stay sharp.",
+    test: /backdrop-blur|backdrop-filter\s*:/,
+    why: "A backdrop-filter, of any kind. Blur is the obvious offender: it smears what is behind the panel and hands the panel its own composited layer, so the type on it rides on a blurred plate. But even `saturate()` is banned, because any backdrop-filter makes the element a backdrop root - and inside a moving preserve-3d subtree that snapshot is rasterised once and then resampled by the transform, so the plate goes soft under the pointer. Use `glass`, `glass-panel` or `glass-dark`: their gloss is a raked specular gradient, a lit top edge and a bright rim, all painted, all sharp.",
   },
   {
     test: /(^|[\s"'`:;(])-?blur-(sm|md|lg|xl|2xl|3xl|\[)|filter\s*:[^;]*\bblur\s*\(|\bblur\(\d/,
@@ -54,7 +54,16 @@ const RULES = [
 /* A lift inside a perspective magnifies by P / (P - Z): the element is
    rasterised once at 1x and then blown up by a few percent, so every
    glyph on it is resampled. Each step has to carry the inverse scale
-   that cancels it. */
+   that cancels it.
+
+   The inverse only holds while the browser paints the subtree in one
+   pass. Anything below the lift that promotes itself - a link that
+   transitions a transform on hover is enough - is rasterised at its
+   ancestors' flat scale and then magnified by the perspective, and the
+   inverse scale cannot reach a layer created beneath it. So a
+   translateZ belongs on a leaf plate that needs real depth, never on a
+   container wrapping content that moves. See the note at the top of
+   Destination.tsx, which is where that was learned. */
 const LIFT = /translateZ\(/;
 const CANCEL = /scale\(/;
 

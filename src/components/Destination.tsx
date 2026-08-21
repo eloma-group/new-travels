@@ -27,34 +27,43 @@ function useCountUp(target: number, run: boolean, dur = 1300) {
 
 /* Per-portal placement in the tilting deck.
 
-   `translateZ` inside a perspective does two things at once: it moves the
-   portal forward, and it magnifies it by P / (P - Z). That magnification is
-   what was making the nameplates blurry - the browser rasterises the layer at
-   its own size and then the perspective blows it up by a few percent, so every
-   glyph is resampled. Pairing each step with its exact inverse scale keeps the
-   depth and the parallax while rendering the portal at 1:1.
+   There is no `translateZ` here, and there cannot be one.
 
-   The size difference between the centre portal and its flanks is deliberate
-   and comes from their width classes below, not from this magnification. */
-const PERSPECTIVE = 1600;
+   Inside a perspective P, a lift of Z magnifies by P / (P - Z). Pairing the
+   lift with `scale(1 - Z / P)` cancels that exactly, and while the browser is
+   painting the deck in one pass it works: the portal renders 1:1.
 
-const at = (z: number, yaw = 0) => ({
-  transform: `translateZ(${z}px) ${yaw ? `rotateY(${yaw}deg) ` : ""}scale(${(
-    1 -
-    z / PERSPECTIVE
-  ).toFixed(5)})`,
+   It stops working the moment anything inside the portal gets its own
+   composited layer. The link lifts on hover, which is a transform, which
+   promotes it - and the compositor rasterises that new layer at its ancestors'
+   flat scale (0.954) and then lets the perspective blow the result back up by
+   1.049. Net: a 4.9% enlargement of an already-rasterised layer, and the
+   region pill and the name on the card go soft under the pointer. The inverse
+   scale cannot reach a layer that is created below it.
+
+   So the depth is gone rather than corrected. Cancelled, the lift was
+   contributing nothing but parallax during a 3deg tilt; what actually reads as
+   depth here is the yaw, the size difference between the centre portal and its
+   flanks (which comes from the width classes below), and the shadows. None of
+   those can be magnified.
+
+   The yaw is deliberately small for the same family of reasons: a rotated
+   layer is resampled by its rotation however it is painted. Five degrees still
+   reads as a curved deck; sixteen only read as soft. */
+const at = (yaw: number, front = false): React.CSSProperties => ({
+  transform: yaw ? `rotateY(${yaw}deg)` : undefined,
+  // the centre portal used to sit in front because it was pushed forward;
+  // without the Z it needs to say so
+  zIndex: front ? 1 : undefined,
+  position: "relative",
 });
 
-/* The yaw is deliberately small. A rotated layer is rasterised once and then
-   resampled by the rotation, so every extra degree costs sharpness on the
-   photograph and on the name under it. Six degrees still reads as a curved
-   deck; sixteen only read as soft. */
 const depth: React.CSSProperties[] = [
-  at(0, 10), //    far-left  - furthest, most yawed
-  at(30, 5), //    left      - yawed toward centre
-  at(74), //       centre    - pushed forward (feature)
-  at(30, -5), //   right     - yawed toward centre
-  at(0, -10), //   far-right - furthest, most yawed
+  at(10), //     far-left  - most yawed
+  at(5), //      left      - yawed toward centre
+  at(0, true), //centre    - the feature, and in front of its flanks
+  at(-5), //     right     - yawed toward centre
+  at(-10), //    far-right - most yawed
 ];
 
 export default function Destination() {

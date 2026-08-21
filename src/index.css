@@ -172,9 +172,15 @@
    separately and rides on a blurred plate. Both halves of that read as "out of
    focus". So the frosting is gone: what makes these read as glass now is a
    raked specular gradient, a lit top edge and a bright rim - all of which are
-   painted, all of which stay sharp at any zoom. A `saturate` on the backdrop
-   is kept, because saturation alone costs no sharpness and keeps the colour
-   underneath alive. */
+   painted, all of which stay sharp at any zoom.
+
+   There is no `backdrop-filter` here at all, not even a harmless-looking
+   `saturate()`. Any backdrop-filter makes the element a backdrop root: the
+   browser snapshots what is behind it into a texture and composites the
+   result. Inside a `preserve-3d` subtree that is moving - which is every
+   portal in the Wander deck - that texture is rasterised once and then
+   resampled by the transform, so the plate and the type on it go soft the
+   moment you point at the card. Saturation is not worth an edge. */
 @utility glass {
   background:
     linear-gradient(
@@ -184,8 +190,6 @@
       rgba(255, 255, 255, 0.22) 62%,
       rgba(255, 255, 255, 0.3) 100%
     );
-  backdrop-filter: saturate(155%) brightness(106%);
-  -webkit-backdrop-filter: saturate(155%) brightness(106%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.75),
@@ -201,8 +205,6 @@
       rgba(252, 249, 243, 0.88) 72%,
       rgba(248, 243, 234, 0.92) 100%
     );
-  backdrop-filter: saturate(150%) brightness(104%);
-  -webkit-backdrop-filter: saturate(150%) brightness(104%);
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 1),
@@ -225,8 +227,6 @@
       rgba(28, 21, 17, 0.5) 42%,
       rgba(28, 21, 17, 0.58) 100%
     );
-  backdrop-filter: saturate(150%);
-  -webkit-backdrop-filter: saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
